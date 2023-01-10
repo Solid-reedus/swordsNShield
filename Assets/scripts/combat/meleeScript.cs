@@ -11,7 +11,7 @@ public class meleeScript : MonoBehaviour
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        Imelee = GetComponent<Imelee>();
+        Imelee = GetComponentInChildren<Imelee>();
     }
 
     public void SwingSword()

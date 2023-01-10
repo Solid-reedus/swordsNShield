@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class playerInput : MonoBehaviour, Imelee
+public class playerInput : MonoBehaviour, Imelee, IBlock
 {
     private Animator playerAnimator;
     private Rigidbody playerRigidbody;
     private float playerHealth;
 
-
-    
-
     [SerializeField] private Transform Camera;
-    //private Camera Camera;
-    //[SerializeField] private GameObject playerModel;
     [SerializeField] private Collider groundCheck;
     private bool isGrounded = true;
 
@@ -25,8 +20,6 @@ public class playerInput : MonoBehaviour, Imelee
     [SerializeField] private float WalkForce = 3;
     [SerializeField] private float lookSensitivity = 1.4f;
 
-    // img
-    //left Arrow
     [SerializeField] private GameObject arrowRight;
     [SerializeField] private GameObject arrowUp;
     [SerializeField] private GameObject arrowBottom;
@@ -35,21 +28,11 @@ public class playerInput : MonoBehaviour, Imelee
     [SerializeField] private float lookThreshold = 0.65f;
     private int lookValInt;
 
-    //int Imelee.dir { get; set; }
-    int Imelee.lookVal { get { return lookValInt; }}
-    //public int dir;
+    int IdirectionalInput.lookVal { get { return lookValInt; }}
 
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        /*
-        arrowUp     = GameObject.Find("top Arrow");
-        arrowRight  = GameObject.Find("right Arrow");
-        arrowBottom = GameObject.Find("bottom Arrow");
-        arrowLeft   = GameObject.Find("left Arrow");
-        */
         playerAnimator = GetComponentInChildren<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
 
@@ -57,11 +40,8 @@ public class playerInput : MonoBehaviour, Imelee
         //Cursor.visible = false;
     }
 
-    // Update is called once per frame
     public void Update()
     {
-        //Debug.Log("lookValInt = " + lookValInt);
-
         playerRigidbody.AddRelativeForce(Time.deltaTime * movementValue * WalkForce, ForceMode.Impulse);
     }
 
@@ -87,58 +67,6 @@ public class playerInput : MonoBehaviour, Imelee
 
         playerAnimator.SetFloat("inputX", movement.x);
         playerAnimator.SetFloat("inputY", movement.y);
-
-        /*
-        void CheckLegs()
-        {
-            if (movement.x == 0 && movement.y > 0)
-            {
-                playerAnimator.Play("forward");
-                //forward
-            }
-            else if (movement.x > 0 && movement.y > 0)
-            {
-                playerAnimator.Play("forward right");
-                //forward right
-            }
-            else if (movement.x > 0 && movement.y == 0)
-            {
-                playerAnimator.Play("right");
-                //right
-            }
-            else if (movement.x > 0 && movement.y < 0)
-            {
-                playerAnimator.Play("backward right");
-                //backward right
-            }
-            else if (movement.x == 0 && movement.y < 0)
-            {
-                playerAnimator.Play("backward");
-                //backward
-            }
-            else if (movement.x < 0 && movement.y < 0)
-            {
-                playerAnimator.Play("backward left");
-                //backward left
-            }
-            else if (movement.x < 0 && movement.y == 0)
-            {
-                playerAnimator.Play("left");
-                //left
-            }
-            else if (movement.x < 0 && movement.y > 0)
-            {
-                playerAnimator.Play("forward left");
-                //forward left
-            }
-            else
-            {
-                playerAnimator.Play("idle");
-                //idle
-            }
-        }
-
-        */
 
         if (movement.x != 0 || movement.y != 0)
         {
@@ -221,7 +149,8 @@ public class playerInput : MonoBehaviour, Imelee
 
         //Debug.Log("lookVal is = " + lookVal);
         lookDir.y -= lookVal.y * Time.deltaTime * lookSensitivity;
-        lookDir.y = Mathf.Clamp(lookDir.y, -15, 30);
+        //lookDir.y = Mathf.Clamp(lookDir.y, -15, 30);
+        lookDir.y = Mathf.Clamp(lookDir.y, -5, 30);
         //Debug.Log("Camera.transform.eulerAngles = " + Camera.transform.eulerAngles);
         //Camera.transform.Rotate(lookDir.y, 0, 0);
 

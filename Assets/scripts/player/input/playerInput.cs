@@ -28,8 +28,10 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
     [SerializeField] private float lookThreshold = 0.65f;
     private int lookValInt;
 
-    int IdirectionalInput.lookVal { get { return lookValInt; }}
+    [SerializeField] private bool isBlocking = false;
 
+    int IdirectionalInput.lookVal { get { return lookValInt; }}
+    bool IdirectionalInput.movingshield { get { return isBlocking; } set { this.isBlocking = value; } } 
 
     void Start()
     {
@@ -59,20 +61,11 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
 
     public void Move(InputAction.CallbackContext value)
     {
-        //Debug.Log(value);
-        //Vector2 nn = new Vector2(0, 0);
         Vector2 movement = value.ReadValue<Vector2>();
         movementValue = new Vector3(movement.x, 0, movement.y);
-        //playerTransform.rotation = Quaternion.LookRotation(dir);
 
         playerAnimator.SetFloat("inputX", movement.x);
         playerAnimator.SetFloat("inputY", movement.y);
-
-        if (movement.x != 0 || movement.y != 0)
-        {
-
-            //playerModel.transform.rotation = Quaternion.LookRotation(movementValue);
-        }
     }
 
     void UpdateArrow()

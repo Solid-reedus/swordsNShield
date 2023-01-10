@@ -14,6 +14,9 @@ public class blockScript : MonoBehaviour
     [SerializeField] private Transform blockTransformL;
     [SerializeField] private Transform blockTransformT;
 
+    //bool movingshield = false;
+
+    [SerializeField] private float blockTime = 33;
     [SerializeField] private TwoBoneIKConstraint Constraint;
 
     private void Start()
@@ -23,49 +26,77 @@ public class blockScript : MonoBehaviour
         Constraint.weight = 0;
     }
 
+    IEnumerator UnBlockLerp()
+    {
+        float time = 0;
+        float var;
+        while (time < blockTime)
+        {
+            time++;
+            var = Mathf.Lerp(0, 1, time / blockTime);
+            Constraint.weight = 1 - var;
+            yield return null;
+        }
+    }
+
+    IEnumerator BlockLerp()
+    {
+        float time = 0;
+        while (time < blockTime)
+        {
+            time++;
+            Constraint.weight = Mathf.Lerp(0, 1, time / blockTime);
+            
+            yield return null;
+        }
+    }
+
     public void Block(InputAction.CallbackContext context )
     {
-        //Debug.Log("context = " + context);
 
-        Constraint.weight = 1;
-
-        //Debug.Log("IBlock.lookVal = " + IBlock.lookVal);
-
-        switch (IBlock.lookVal)
+        if (context.performed)
         {
-            case 1:
+            StartCoroutine(BlockLerp());
+            IBlock.movingshield = true;
+        }
+
+        if (IBlock.movingshield == false)
+        {
+            switch (IBlock.lookVal)
+            {
+                case 1:
                 {
                     riggingTarget.position = blockTransformR.position;
                     riggingTarget.eulerAngles = blockTransformR.eulerAngles;
                     break;
                 }
-            case 2:
+                case 2:
                 {
                     riggingTarget.position = blockTransformB.position;
                     riggingTarget.eulerAngles = blockTransformB.eulerAngles;
                     break;
                 }
-            case 3:
+                case 3:
                 {
                     riggingTarget.position = blockTransformL.position;
                     riggingTarget.eulerAngles = blockTransformL.eulerAngles;
                     break;
                 }
-            case 4:
+                case 4:
                 {
                     riggingTarget.position = blockTransformT.position;
                     riggingTarget.eulerAngles = blockTransformT.eulerAngles;
                     break;
                 }
-
-
-            default:
-                break;
+                default:
+                    break;
+            }
         }
 
         if (context.canceled)
         {
-            Constraint.weight = 0;
+            StartCoroutine(UnBlockLerp());
+            IBlock.movingshield = false;
         }
 
 

@@ -18,32 +18,35 @@ public class meleeScript : MonoBehaviour
     {
         Debug.Log("Imelee.dir = " + Imelee.lookVal);
 
-        switch (Imelee.lookVal)
+        if (!Imelee.movingshield)
         {
-            case 1:
+            switch (Imelee.lookVal)
             {
-                animator.Play("swing one handed R");
-                break;
-            }
-            case 2:
-            {
+                case 1:
+                {
+                    animator.Play("swing one handed R");
+                    break;
+                }
+                case 2:
+                {
 
-                break;
-            }
-            case 3:
-            {
-                animator.Play("swing one handed L");
-                break;
-            }
-            case 4:
-            {
+                    break;
+                }
+                case 3:
+                {
+                    animator.Play("swing one handed L");
+                    break;
+                }
+                case 4:
+                {
 
-                break;
+                    break;
+                }
+
+
+                default:
+                    break;
             }
-
-
-            default:
-                break;
         }
     }
 

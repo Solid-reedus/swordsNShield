@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IBlock : IdirectionalInput
 {
     //public Transform BlockTarget { get; }
-    
+    public Collider shieldTrigger { get; }
 }

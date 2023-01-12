@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemyAiScript : MonoBehaviour
+public class enemyAiScript : MonoBehaviour, IdamageAble
 {
     private int enemyStateVal = 1;
     //private int enemyWeaponEquip = 1;
 
+    [SerializeField] private float health = 100;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void damage(float dmg)
+    {
+        health -= dmg;
     }
 
     private void enemyState()
@@ -59,4 +65,6 @@ public class enemyAiScript : MonoBehaviour
 
 
     }
+
+    
 }

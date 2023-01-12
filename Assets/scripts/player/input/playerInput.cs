@@ -25,13 +25,19 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
     [SerializeField] private GameObject arrowBottom;
     [SerializeField] private GameObject arrowLeft;
 
+
+    [SerializeField] private Collider swordTrigger;
+    [SerializeField] private Collider shieldTrigger;
+
     [SerializeField] private float lookThreshold = 0.65f;
     private int lookValInt;
 
     [SerializeField] private bool isBlocking = false;
 
     int IdirectionalInput.lookVal { get { return lookValInt; }}
-    bool IdirectionalInput.movingshield { get { return isBlocking; } set { this.isBlocking = value; } } 
+    bool IdirectionalInput.movingshield { get { return isBlocking; } set { this.isBlocking = value; } }
+
+    Collider IBlock.shieldTrigger { get { return shieldTrigger; } }
 
     void Start()
     {
@@ -39,7 +45,6 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
         playerRigidbody = GetComponent<Rigidbody>();
 
         Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
     }
 
     public void Update()

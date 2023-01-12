@@ -6,25 +6,90 @@ public class meleeScript : MonoBehaviour
 {
     public Imelee Imelee;
 
-    [SerializeField] Animator animator;
+    private float damage = 10;
+    bool hasSwung = false;
+    bool isHit = false;
+
+    private string animName = "sword swing";
+    private string animNameR; 
+    private string animNameB; 
+    private string animNameT; 
+    private string animNameL; 
+
+    //private Collider SwordTrigger;
+
+    [SerializeField] private ReturnColliderScript colScript;
+    [SerializeField] private Animator animator;
+    Dictionary<string, float> animList = new Dictionary<string, float>();
 
     private void Start()
     {
+        animNameR = animName + " R";
+        animNameB = animName + " B";
+        animNameT = animName + " T";
+        animNameL = animName + " L";
+
         animator = GetComponentInChildren<Animator>();
         Imelee = GetComponentInChildren<Imelee>();
+        colScript = GetComponentInChildren<ReturnColliderScript>();
+
+        foreach (var item in animator.runtimeAnimatorController.animationClips)
+        {
+            animList.Add(item.name, item.length);
+        }
+    }
+
+    IEnumerator WaitForSecondSwing(float dur)
+    {
+        yield return new WaitForSeconds(dur + 0.25f);
+        isHit = false;
+        hasSwung = false;
+        yield return null;
+    }
+
+    IEnumerator SwingSwordCoroutine(float dur)
+    {
+        dur *= 100; // ~150
+        float time = 0;
+
+        while (time < dur && !isHit)
+        {
+            time++;
+            if (colScript.Collider != null
+                && !isHit
+                && time > dur * 0.3
+                && time < dur * 0.8)
+            {
+                if (colScript.Collider.GetComponent<IdamageAble>() != null)
+                {
+                    IdamageAble damageAble = colScript.Collider.GetComponent<IdamageAble>();
+                    damageAble.damage(damage);
+                    colScript.Collider = null;
+                    Debug.Log($"isHit = {isHit} damageAble = {damageAble}");
+                    isHit = true;
+                    //yield break;
+                }
+                else if (colScript.Collider.tag == "shield")
+                {
+                    Debug.Log($"shield = {colScript.Collider.name}");
+                    isHit = true;
+                }
+            }
+            yield return null;
+        }
     }
 
     public void SwingSword()
     {
-        Debug.Log("Imelee.dir = " + Imelee.lookVal);
-
-        if (!Imelee.movingshield)
+        if (!Imelee.movingshield && !hasSwung)
         {
             switch (Imelee.lookVal)
             {
                 case 1:
                 {
-                    animator.Play("swing one handed R");
+                    StartCoroutine(SwingSwordCoroutine(animList[animNameR]));
+                    StartCoroutine(WaitForSecondSwing(animList[animNameR]));
+                    animator.Play(animNameR);
                     break;
                 }
                 case 2:
@@ -34,7 +99,9 @@ public class meleeScript : MonoBehaviour
                 }
                 case 3:
                 {
-                    animator.Play("swing one handed L");
+                    StartCoroutine(SwingSwordCoroutine(animList[animNameL]));
+                    StartCoroutine(WaitForSecondSwing(animList[animNameL]));
+                    animator.Play(animNameL);
                     break;
                 }
                 case 4:
@@ -42,13 +109,9 @@ public class meleeScript : MonoBehaviour
 
                     break;
                 }
-
-
                 default:
                     break;
             }
         }
     }
-
-
 }

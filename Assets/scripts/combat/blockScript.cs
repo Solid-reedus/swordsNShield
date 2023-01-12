@@ -19,6 +19,13 @@ public class blockScript : MonoBehaviour
     [SerializeField] private float blockTime = 33;
     [SerializeField] private TwoBoneIKConstraint Constraint;
 
+    /*
+    private void Update()
+    {
+        Debug.Log("iblock mesh = " + IBlock.shieldTrigger);
+    }
+    */
+
     private void Start()
     {
         Constraint = GetComponentInChildren<TwoBoneIKConstraint>();
@@ -51,7 +58,7 @@ public class blockScript : MonoBehaviour
         }
     }
 
-    public void Block(InputAction.CallbackContext context )
+    public void Block(InputAction.CallbackContext context)
     {
 
         if (context.performed)

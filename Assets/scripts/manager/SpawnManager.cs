@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    int enemyCount = 10;
-    int allyCount  = 3;
+    [SerializeField] private int enemyCount = 10;
+    [SerializeField] private int allyCount  = 3;
 
     [SerializeField] private Transform enemySpawnA;
     [SerializeField] private Transform enemySpawnB;
@@ -57,17 +57,48 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public bool BattleIsOver(string enemyTag)
+    public bool BattleIsOver(string tagName)
     {
         bool battleIsOver = true;
+
+        if (tagName == "enemy")
+        {
+            foreach (var item in enemies)
+            {
+                if (item != null)
+                {
+                    //Debug.Log("enemy found =" + item);
+                    battleIsOver = false;
+                    return battleIsOver;
+                }
+            }
+        }
+        else if (tagName == "ally")
+        {
+            foreach (var item in allies)
+            {
+                if (item != null)
+                {
+                    //Debug.Log("ally found =" + item);
+                    battleIsOver = false;
+                    return battleIsOver;
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("unusable tag");
+        }
+        /*
         foreach (var item in enemies)
         {
-            if (item != null && item.tag == enemyTag)
+            if (item != null)
             {
                 battleIsOver = false;
                 return battleIsOver;
             }
         }
+        */
         return battleIsOver;
     }
 
@@ -109,19 +140,44 @@ public class SpawnManager : MonoBehaviour
 
     public GameObject GetClosestEnemy(Transform instigator, string tagName)
     {
+        //Debug.Log($"GetClosestEnemy is prefromed Transform = {instigator} tagName = {tagName}");
+
         float closest = 100;
         float tempVal;
         GameObject target = null;
 
-        foreach (var item in enemies)
+        if (tagName == "enemy")
         {
-            tempVal = Vector3.Distance(instigator.position, item.transform.position);
-            if (closest < tempVal && item.tag == tagName)
+            foreach (var item in enemies)
             {
-                closest = tempVal;
-                target = item;
+                tempVal = Vector3.Distance(instigator.position, item.transform.position);
+                if (closest > tempVal)
+                {
+                    closest = tempVal;
+                    target = item;
+                    Debug.Log("updated enemy list");
+                }
             }
         }
+        else if (tagName == "ally")
+        {
+            foreach (var item in allies)
+            {
+                tempVal = Vector3.Distance(instigator.position, item.transform.position);
+                if (closest > tempVal)
+                {
+                    closest = tempVal;
+                    target = item;
+                    Debug.Log("updated ally list");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("unusable tag");
+        }
+
+        Debug.Log($"returned value is {target.name}");
         return target;
     }
 

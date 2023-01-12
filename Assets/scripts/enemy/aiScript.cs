@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class aiScript : MonoBehaviour, IdamageAble
 {
     [SerializeField] private GameObject armour;
     [SerializeField] private GameObject shield;
     [SerializeField] private Material enemyMaterial;
+
+    NavMeshAgent NavMeshAgent;
 
 
     private int enemyStateVal = 1;
@@ -24,6 +27,7 @@ public class aiScript : MonoBehaviour, IdamageAble
 
     private void Awake()
     {
+        NavMeshAgent = GetComponent<NavMeshAgent>();
         SpawnManager = FindObjectOfType<SpawnManager>();
 
         if (tag == "ally")
@@ -53,17 +57,13 @@ public class aiScript : MonoBehaviour, IdamageAble
         armour.GetComponent<SkinnedMeshRenderer>().material = enemyMaterial;
         shield.transform.GetChild(0).gameObject.SetActive(false);
         shield.transform.GetChild(1).gameObject.SetActive(true);
-
-
-        //shield.transform.GetChild(1);
-        //shield.GetComponent<MeshRenderer>().material = enemyMaterial;
     }
 
     
     IEnumerator GoToEnemy(GameObject target)
     {
-
-
+        Debug.Log($"{this.name} is following {target} at {target.transform.position}");
+        NavMeshAgent.SetDestination(target.transform.position);
 
         yield break;
     }
@@ -97,8 +97,10 @@ public class aiScript : MonoBehaviour, IdamageAble
             // chase
             case 2:
             {
+                Debug.Log("SpawnManager.GetClosestEnemy(this.transform, enemyTag) = " + SpawnManager.GetClosestEnemy(this.transform, enemyTag).name);
+
                 StartCoroutine(GoToEnemy(
-                    SpawnManager.GetClosestEnemy(this.transform, enemyTag)));
+                SpawnManager.GetClosestEnemy(this.transform, enemyTag)));
 
                 // go position of the player unit it hits a trigger
                 break;

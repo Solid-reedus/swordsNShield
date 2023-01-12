@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 467342013066351634}
   - component: {fileID: 467342013066351646}
   - component: {fileID: 7853159107274390916}
+  - component: {fileID: 6460363053523688290}
   m_Layer: 0
   m_Name: knight
   m_TagString: ally
@@ -314,6 +315,28 @@ MonoBehaviour:
   shield: {fileID: 6382451597828402317}
   enemyMaterial: {fileID: 2100000, guid: 0ef961eb2d01aaa4ea61c08670be6afa, type: 2}
   health: 100
+--- !u!195 &6460363053523688290
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467342013066351637}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &467342013162239109
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,16 +749,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
   m_PrefabInstance: {fileID: 467342013126039421}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1552312247743019444 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
-  m_PrefabInstance: {fileID: 467342013126039421}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4787870707349102025 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4903780212639320756, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
-  m_PrefabInstance: {fileID: 467342013126039421}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7510288811467208739 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7945953894594096990, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
@@ -759,6 +772,16 @@ Transform:
 --- !u!4 &805733518753894451 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 960075172793927502, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+  m_PrefabInstance: {fileID: 467342013126039421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4787870707349102025 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4903780212639320756, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+  m_PrefabInstance: {fileID: 467342013126039421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1552312247743019444 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
   m_PrefabInstance: {fileID: 467342013126039421}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &467342013556460298

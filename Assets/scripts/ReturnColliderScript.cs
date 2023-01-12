@@ -6,6 +6,11 @@ public class ReturnColliderScript : MonoBehaviour
 {
     public Collider Collider;
 
+    private void Start()
+    {
+        Collider = null;
+    }
+
     private void OnTriggerEnter(Collider col)
     {
         Collider = col;

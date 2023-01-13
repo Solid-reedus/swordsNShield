@@ -33,9 +33,12 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
     private int lookValInt;
 
     [SerializeField] private bool isBlocking = false;
+    [SerializeField] private bool isSwining = false;
 
     int IdirectionalInput.lookVal { get { return lookValInt; }}
-    bool IdirectionalInput.movingshield { get { return isBlocking; } set { this.isBlocking = value; } }
+    //bool IdirectionalInput.movingshield { get { return isBlocking; } set { this.isBlocking = value; } }
+    bool IBlock.isBlocking { get { return isBlocking; } set { this.isBlocking = value; } }
+    bool Imelee.isSwinging { get { return isSwining; } set { this.isSwining = value; } }
 
     Collider IBlock.shieldTrigger { get { return shieldTrigger; } }
 

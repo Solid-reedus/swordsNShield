@@ -16,7 +16,7 @@ public class blockScript : MonoBehaviour
 
     //bool movingshield = false;
 
-    [SerializeField] private float blockTime = 33;
+    [SerializeField] private float blockTime = 0.4f;
     [SerializeField] private TwoBoneIKConstraint Constraint;
 
     /*
@@ -39,9 +39,9 @@ public class blockScript : MonoBehaviour
         float var;
         while (time < blockTime)
         {
-            time++;
             var = Mathf.Lerp(0, 1, time / blockTime);
             Constraint.weight = 1 - var;
+            time += Time.deltaTime;
             yield return null;
         }
     }
@@ -51,9 +51,9 @@ public class blockScript : MonoBehaviour
         float time = 0;
         while (time < blockTime)
         {
-            time++;
             Constraint.weight = Mathf.Lerp(0, 1, time / blockTime);
-            
+            time += Time.deltaTime;
+
             yield return null;
         }
     }
@@ -64,10 +64,10 @@ public class blockScript : MonoBehaviour
         if (context.performed)
         {
             StartCoroutine(BlockLerp());
-            IBlock.movingshield = true;
+            IBlock.isBlocking = true;
         }
 
-        if (IBlock.movingshield == false)
+        if (IBlock.isBlocking == false)
         {
             switch (IBlock.lookVal)
             {
@@ -103,7 +103,7 @@ public class blockScript : MonoBehaviour
         if (context.canceled)
         {
             StartCoroutine(UnBlockLerp());
-            IBlock.movingshield = false;
+            IBlock.isBlocking = false;
         }
 
 

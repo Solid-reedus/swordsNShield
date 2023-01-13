@@ -8,19 +8,23 @@ public class aiScript : MonoBehaviour, IdamageAble
     [SerializeField] private GameObject armour;
     [SerializeField] private GameObject shield;
     [SerializeField] private Material enemyMaterial;
+    private Animator Animator;
 
     NavMeshAgent NavMeshAgent;
+    GameObject target;
 
 
-    private int enemyStateVal = 1;
+    [SerializeField] private int enemyStateVal = 1;
     //private int enemyWeaponEquip = 1;
     //string tag = "";
     [SerializeField] private float health = 100;
     SpawnManager SpawnManager;
 
+    /*
     bool canWalk = true;
     bool canSwing = true;
     bool canBlock = true;
+    */
 
     string enemyTag;
 
@@ -29,6 +33,7 @@ public class aiScript : MonoBehaviour, IdamageAble
     {
         NavMeshAgent = GetComponent<NavMeshAgent>();
         SpawnManager = FindObjectOfType<SpawnManager>();
+        Animator = GetComponentInChildren<Animator>();
 
         if (tag == "ally")
         {
@@ -62,22 +67,41 @@ public class aiScript : MonoBehaviour, IdamageAble
     
     IEnumerator GoToEnemy(GameObject target)
     {
-        Debug.Log($"{this.name} is following {target} at {target.transform.position}");
+        if ( Vector3.Distance(this.transform.position , target.transform.position) < 2.5f)
+        {
+            enemyStateVal = 3;
+            yield break;
+        }
+        //Debug.Log($"{this.name} is following {target} at {target.transform.position}");
         NavMeshAgent.SetDestination(target.transform.position);
 
-        yield break;
+        //yield break;
     }
     
 
     // Update is called once per frame
     void Update()
     {
-        KnightState();
+        if (health > 1)
+        {
+            KnightState();
+        }
     }
 
     public void damage(float dmg)
     {
         health -= dmg;
+        if (health < 1)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        //Animator.applyRootMotion = true;
+        Animator.Play("die");
+
     }
 
     private void KnightState()
@@ -97,20 +121,22 @@ public class aiScript : MonoBehaviour, IdamageAble
             // chase
             case 2:
             {
-                Debug.Log("SpawnManager.GetClosestEnemy(this.transform, enemyTag) = " + SpawnManager.GetClosestEnemy(this.transform, enemyTag).name);
-
                 StartCoroutine(GoToEnemy(
                 SpawnManager.GetClosestEnemy(this.transform, enemyTag)));
-
                 // go position of the player unit it hits a trigger
                 break;
             }
-            // swing sword
+            // REselect target
             case 3:
             {
-                // after a random amount of seconds start a couroutine to swing a sword 
+                target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
+                this.transform.LookAt(target.transform);
+                enemyStateVal = 4;
                 break;
             }
+
+
+            // after a random amount of seconds start a couroutine to swing a sword 
             // block attack
             case 4:
             {

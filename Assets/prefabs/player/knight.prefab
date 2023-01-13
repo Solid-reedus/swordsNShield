@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0342558b4294865458e1b1f90220aaa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
   colScript: {fileID: 0}
   animator: {fileID: 0}
 --- !u!114 &467342013066351646
@@ -297,7 +298,7 @@ MonoBehaviour:
   blockTransformB: {fileID: 467342012697085396}
   blockTransformL: {fileID: 467342012815854973}
   blockTransformT: {fileID: 467342013162239108}
-  blockTime: 33
+  blockTime: 0.4
   Constraint: {fileID: 0}
 --- !u!114 &7853159107274390916
 MonoBehaviour:
@@ -314,6 +315,7 @@ MonoBehaviour:
   armour: {fileID: 7510288811467208739}
   shield: {fileID: 6382451597828402317}
   enemyMaterial: {fileID: 2100000, guid: 0ef961eb2d01aaa4ea61c08670be6afa, type: 2}
+  enemyStateVal: 1
   health: 100
 --- !u!195 &6460363053523688290
 NavMeshAgent:

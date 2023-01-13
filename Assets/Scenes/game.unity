@@ -364,6 +364,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 467342013066351646, guid: 292c9cea7b89a5a4291cef0046cb54c2, type: 3}
+      propertyPath: blockTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142879745802670289, guid: 292c9cea7b89a5a4291cef0046cb54c2, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 292c9cea7b89a5a4291cef0046cb54c2, type: 3}
 --- !u!1 &1298081667 stripped
@@ -401,7 +409,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 8
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!64 &1932700551
 MeshCollider:
@@ -563,6 +571,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: ally
       objectReference: {fileID: 0}
+    - target: {fileID: 970148155951811070, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: blockTime
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 970148156066210752, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.089
@@ -589,7 +601,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3635683235802320177, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
+        'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
+        'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
+        'Shoulder_L'\n\tTransform 'Elbow_R'\n\tFrom animation clip 'sword swing T'"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
@@ -606,11 +623,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: allyCount
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: enemyCount
-      value: 5
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306099, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: m_RootOrder

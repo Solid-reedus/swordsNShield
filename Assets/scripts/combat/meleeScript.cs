@@ -5,8 +5,9 @@ using UnityEngine;
 public class meleeScript : MonoBehaviour
 {
     public Imelee Imelee;
+    public IBlock IBlock;
 
-    private float damage = 10;
+    [SerializeField] private float damage = 10;
     bool hasSwung = false;
     bool isHit = false;
 
@@ -29,8 +30,9 @@ public class meleeScript : MonoBehaviour
         animNameT = animName + " T";
         animNameL = animName + " L";
 
-        animator = GetComponentInChildren<Animator>();
         Imelee = GetComponentInChildren<Imelee>();
+        IBlock = GetComponentInChildren<IBlock>();
+        animator = GetComponentInChildren<Animator>();
         colScript = GetComponentInChildren<ReturnColliderScript>();
 
         foreach (var item in animator.runtimeAnimatorController.animationClips)
@@ -81,7 +83,7 @@ public class meleeScript : MonoBehaviour
 
     public void SwingSword()
     {
-        if (!Imelee.movingshield && !hasSwung)
+        if (!IBlock.isBlocking && !hasSwung)
         {
             switch (Imelee.lookVal)
             {
@@ -94,7 +96,9 @@ public class meleeScript : MonoBehaviour
                 }
                 case 2:
                 {
-
+                    StartCoroutine(SwingSwordCoroutine(animList[animNameT]));
+                    StartCoroutine(WaitForSecondSwing(animList[animNameT]));
+                    animator.Play(animNameT);
                     break;
                 }
                 case 3:
@@ -106,7 +110,6 @@ public class meleeScript : MonoBehaviour
                 }
                 case 4:
                 {
-
                     break;
                 }
                 default:

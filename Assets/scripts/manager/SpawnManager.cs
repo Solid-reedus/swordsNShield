@@ -155,7 +155,6 @@ public class SpawnManager : MonoBehaviour
                 {
                     closest = tempVal;
                     target = item;
-                    Debug.Log("updated enemy list");
                 }
             }
         }
@@ -168,7 +167,6 @@ public class SpawnManager : MonoBehaviour
                 {
                     closest = tempVal;
                     target = item;
-                    Debug.Log("updated ally list");
                 }
             }
         }
@@ -177,13 +175,8 @@ public class SpawnManager : MonoBehaviour
             Debug.LogError("unusable tag");
         }
 
-        Debug.Log($"returned value is {target.name}");
+        //Debug.Log($"returned value is {target.name}");
         return target;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -7,5 +7,6 @@ public interface Imelee : IdirectionalInput
     //public void getSwingDir();
     //Animator Animator { get;}
     //public Collider SwordTrigger { get; }
+    public bool isSwinging { get; set; }
 
 }

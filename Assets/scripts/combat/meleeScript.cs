@@ -110,6 +110,9 @@ public class meleeScript : MonoBehaviour
                 }
                 case 4:
                 {
+                    StartCoroutine(SwingSwordCoroutine(animList[animNameB]));
+                    StartCoroutine(WaitForSecondSwing(animList[animNameB]));
+                    animator.Play(animNameB);
                     break;
                 }
                 default:

@@ -503,6 +503,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: player_sword
       objectReference: {fileID: 0}
+    - target: {fileID: 970148155710150436, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148155710150436, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148155710150436, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 970148155951811056, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
       propertyPath: m_Constraints
       value: 112
@@ -587,9 +599,45 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 2.203
       objectReference: {fileID: 0}
+    - target: {fileID: 970148156083381799, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148156083381799, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148156083381799, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 970148156750554402, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148156952021993, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148156952021993, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148156952021993, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148157381085166, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148157381085166, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 970148157381085166, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 1146019824104895818, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
       propertyPath: m_IsActive
@@ -603,10 +651,8 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: "\nBinding warning: Some generic clip(s) animate transforms that are
         already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Shoulder_L'\n\tTransform 'Elbow_R'\n\tFrom animation clip 'sword swing T'"
+        by Humanoid clips.\n\tTransform 'Elbow_R'\n\tFrom animation clip 'sword swing
+        T'"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b78551f79355c9541a32f985e6ab4db2, type: 3}
@@ -623,11 +669,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: allyCount
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: enemyCount
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306099, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: m_RootOrder

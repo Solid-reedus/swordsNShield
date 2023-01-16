@@ -33,10 +33,13 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool isSwining = false;
 
+    private string enemyTag = "enemy";
+
     int IdirectionalInput.lookVal { get { return lookValInt; }}
     //bool IdirectionalInput.movingshield { get { return isBlocking; } set { this.isBlocking = value; } }
     bool IBlock.isBlocking { get { return isBlocking; } set { this.isBlocking = value; } }
     bool Imelee.isSwinging { get { return isSwining; } set { this.isSwining = value; } }
+    string Imelee.enemyTag { get { return enemyTag; } set { this.enemyTag = value; } }
 
     Collider IBlock.shieldTrigger { get { return shieldTrigger; } }
 
@@ -163,7 +166,11 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 
     void Die()
     {
+        playerAnimator.applyRootMotion = true;
+        playerAnimator.Play("no more walking");
         playerAnimator.Play("die");
+        GetComponent<playerInput>().enabled = false;
+        lookSensitivity = 0;
     }
 
 

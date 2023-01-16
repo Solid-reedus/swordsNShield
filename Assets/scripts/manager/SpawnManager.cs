@@ -63,40 +63,38 @@ public class SpawnManager : MonoBehaviour
         {
             foreach (var item in enemies)
             {
-                if (item != null)
+                if (item != null && !item.GetComponent<aiScript>().isDead)
                 {
                     //Debug.Log("enemy found =" + item);
                     battleIsOver = false;
                     return battleIsOver;
                 }
             }
+            Debug.Log("battle is over");
         }
         else if (tagName == "ally")
         {
             foreach (var item in allies)
             {
-                if (item != null)
+                if (item.GetComponent<aiScript>() == null)
+                {
+                    battleIsOver = false;
+                    return battleIsOver;
+                }
+                else if (item != null && !item.GetComponent<aiScript>().isDead)
                 {
                     //Debug.Log("ally found =" + item);
                     battleIsOver = false;
                     return battleIsOver;
                 }
             }
+            Debug.Log("battle is over");
         }
         else
         {
             Debug.LogError("unusable tag");
         }
-        /*
-        foreach (var item in enemies)
-        {
-            if (item != null)
-            {
-                battleIsOver = false;
-                return battleIsOver;
-            }
-        }
-        */
+
         return battleIsOver;
     }
 
@@ -149,7 +147,7 @@ public class SpawnManager : MonoBehaviour
             foreach (var item in enemies)
             {
                 tempVal = Vector3.Distance(instigator.position, item.transform.position);
-                if (closest > tempVal)
+                if (closest > tempVal && !item.GetComponent<aiScript>().isDead)
                 {
                     closest = tempVal;
                     target = item;
@@ -161,7 +159,14 @@ public class SpawnManager : MonoBehaviour
             foreach (var item in allies)
             {
                 tempVal = Vector3.Distance(instigator.position, item.transform.position);
-                if (closest > tempVal)
+
+
+                if (item.GetComponent<aiScript>() == null)
+                {
+                    closest = tempVal;
+                    target = item;
+                }
+                else if (closest > tempVal && !item.GetComponent<aiScript>().isDead)
                 {
                     closest = tempVal;
                     target = item;

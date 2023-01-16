@@ -25,13 +25,13 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
     [SerializeField] private bool isBlocking = false;
 
     bool canSwing = true;
+    public bool isDead = false;
 
     string enemyTag;
 
-
     int IdirectionalInput.lookVal { get { return lookval; } }
     bool Imelee.isSwinging { get { return isAttacking; } set { this.isAttacking = value; } }
-
+    string Imelee.enemyTag { get { return enemyTag; } set { this.enemyTag = value; } }
     bool IBlock.isBlocking { get { return isBlocking; } set { this.isBlocking = value; } }
     Collider IBlock.shieldTrigger { get { return shield.GetComponent<Collider>(); } }
 
@@ -57,9 +57,6 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         }
         Colorcoat();
         target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
-
-        //Invoke("KnightAttack", 1);
-        //StartCoroutine(KnightAttack());
     }
 
     void Colorcoat()
@@ -76,8 +73,6 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         shield.transform.GetChild(1).gameObject.SetActive(true);
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         if (health > 1)
@@ -98,8 +93,11 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
 
     void Die()
     {
+        GetComponent<Collider>().enabled = false;
+        Animator.applyRootMotion = true;
+        Animator.Play("no more walking");
         Animator.Play("die");
-        //Destroy(this);
+        isDead = true;
     }
 
     IEnumerator Timer(bool TimerBool, float timerToWait)

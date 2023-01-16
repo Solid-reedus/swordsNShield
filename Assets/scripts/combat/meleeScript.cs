@@ -7,7 +7,8 @@ public class meleeScript : MonoBehaviour
     public Imelee Imelee;
     public IBlock IBlock;
 
-    [SerializeField] private float damage = 35;
+    //[SerializeField] private float damage = 35;
+    float damage = 35;
     bool hasSwung = false;
     bool isHit = false;
 
@@ -51,7 +52,7 @@ public class meleeScript : MonoBehaviour
 
     IEnumerator SwingSwordCoroutine(float dur)
     {
-        Debug.Log("SwingSwordCoroutine is run");
+        //Debug.Log("SwingSwordCoroutine is run");
         dur *= 100; // ~150
         float time = 0;
 
@@ -60,15 +61,19 @@ public class meleeScript : MonoBehaviour
             time++;
             if (colScript.Collider != null
                 && !isHit
-                && time > dur * 0.3
-                && time < dur * 0.8)
+                //&& time > dur * 0.1
+                //&& time < dur * 0.8
+                )
             {
-                if (colScript.Collider.GetComponent<IdamageAble>() != null)
+                Debug.Log($"colScript.Collider = {colScript.Collider}");
+
+                if (colScript.Collider.GetComponent<IdamageAble>() != null 
+                    && colScript.Collider.tag == Imelee.enemyTag)
                 {
                     IdamageAble damageAble = colScript.Collider.GetComponent<IdamageAble>();
                     damageAble.damage(damage);
                     colScript.Collider = null;
-                    Debug.Log($"isHit = {isHit} damageAble = {damageAble}");
+                    //Debug.Log($"isHit = {isHit} damageAble = {damageAble}");
                     isHit = true;
                     //yield break;
                 }

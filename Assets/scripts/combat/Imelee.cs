@@ -5,4 +5,5 @@ using UnityEngine;
 public interface Imelee : IdirectionalInput
 {
     public bool isSwinging { get; set; }
+    public string enemyTag { get; set; }
 }

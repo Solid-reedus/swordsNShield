@@ -261,7 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0342558b4294865458e1b1f90220aaa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
   animNameR: 
   animNameB: 
   animNameT: 
@@ -287,6 +286,7 @@ MonoBehaviour:
   health: 100
   isAttacking: 0
   isBlocking: 0
+  isDead: 0
 --- !u!195 &6460363053523688290
 NavMeshAgent:
   m_ObjectHideFlags: 0

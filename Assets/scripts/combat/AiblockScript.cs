@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using UnityEngine.InputSystem;
 
-public class blockScript : MonoBehaviour
+public class AiblockScript : MonoBehaviour
 {
     public IBlock IBlock;
     [SerializeField] Transform riggingTarget;
@@ -13,8 +12,6 @@ public class blockScript : MonoBehaviour
     [SerializeField] private Transform blockTransformB;
     [SerializeField] private Transform blockTransformL;
     [SerializeField] private Transform blockTransformT;
-
-    //bool movingshield = false;
 
     [SerializeField] private float blockTime = 0.4f;
     [SerializeField] private TwoBoneIKConstraint Constraint;
@@ -51,8 +48,9 @@ public class blockScript : MonoBehaviour
         }
     }
 
-    public void Block(InputAction.CallbackContext context)
+    public void Block()
     {
+        /*
         if (context.performed)
         {
             StartCoroutine(BlockLerp());
@@ -64,29 +62,29 @@ public class blockScript : MonoBehaviour
             switch (IBlock.lookVal)
             {
                 case 1:
-                {
-                    riggingTarget.position = blockTransformR.position;
-                    riggingTarget.eulerAngles = blockTransformR.eulerAngles;
-                    break;
-                }
+                    {
+                        riggingTarget.position = blockTransformR.position;
+                        riggingTarget.eulerAngles = blockTransformR.eulerAngles;
+                        break;
+                    }
                 case 2:
-                {
-                    riggingTarget.position = blockTransformB.position;
-                    riggingTarget.eulerAngles = blockTransformB.eulerAngles;
-                    break;
-                }
+                    {
+                        riggingTarget.position = blockTransformB.position;
+                        riggingTarget.eulerAngles = blockTransformB.eulerAngles;
+                        break;
+                    }
                 case 3:
-                {
-                    riggingTarget.position = blockTransformL.position;
-                    riggingTarget.eulerAngles = blockTransformL.eulerAngles;
-                    break;
-                }
+                    {
+                        riggingTarget.position = blockTransformL.position;
+                        riggingTarget.eulerAngles = blockTransformL.eulerAngles;
+                        break;
+                    }
                 case 4:
-                {
-                    riggingTarget.position = blockTransformT.position;
-                    riggingTarget.eulerAngles = blockTransformT.eulerAngles;
-                    break;
-                }
+                    {
+                        riggingTarget.position = blockTransformT.position;
+                        riggingTarget.eulerAngles = blockTransformT.eulerAngles;
+                        break;
+                    }
                 default:
                     break;
             }
@@ -97,8 +95,10 @@ public class blockScript : MonoBehaviour
             StartCoroutine(UnBlockLerp());
             IBlock.isBlocking = false;
         }
-
+        */
 
     }
+
+
 
 }

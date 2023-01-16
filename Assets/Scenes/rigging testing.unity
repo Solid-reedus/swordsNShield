@@ -974,10 +974,8 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: "\nBinding warning: Some generic clip(s) animate transforms that are
         already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Head_M'\n\tTransform 'Elbow_R'\n\tTransform
-        'Shoulder_R'\n\tTransform 'Wrist_R'\n\tTransform 'Neck_M'\n\tTransform 'Head_M'\n\tTransform
-        'Elbow_R'\n\tTransform 'Shoulder_R'\n\tTransform 'Wrist_R'\n\tTransform 'Neck_M'\n\tand
-        more ...\n\tFrom animation clip 'sword swing T'"
+        by Humanoid clips.\n\tTransform 'Elbow_R'\n\tFrom animation clip 'sword swing
+        T'"
       objectReference: {fileID: 0}
     - target: {fileID: 5310941407420749463, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_LocalRotation.w

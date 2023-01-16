@@ -15,10 +15,4 @@ public class ReturnColliderScript : MonoBehaviour
     {
         Collider = col;
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        //Collider = null;
-    }
-
 }

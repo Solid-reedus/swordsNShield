@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class playerInput : MonoBehaviour, Imelee, IBlock
+public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 {
     private Animator playerAnimator;
     private Rigidbody playerRigidbody;
-    private float playerHealth;
+    [SerializeField] private float playerHealth = 100;
 
     [SerializeField] private Transform Camera;
     [SerializeField] private Collider groundCheck;
-    private bool isGrounded = true;
 
     private Vector3 lookDir = new Vector3(15, 0, 0);
 
@@ -24,7 +23,6 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
     [SerializeField] private GameObject arrowUp;
     [SerializeField] private GameObject arrowBottom;
     [SerializeField] private GameObject arrowLeft;
-
 
     [SerializeField] private Collider swordTrigger;
     [SerializeField] private Collider shieldTrigger;
@@ -46,7 +44,6 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
     {
         playerAnimator = GetComponentInChildren<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
-
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -143,17 +140,8 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
             //Debug.Log("player is looking n/a");
         }
 
-
-        //Debug.Log("this the result = " + result + "  - vec2 = " + lookVal2);
-        //bool lookingLeft => { lookVal.x < 0};
-
-
-        //Debug.Log("lookVal is = " + lookVal);
         lookDir.y -= lookVal.y * Time.deltaTime * lookSensitivity;
-        //lookDir.y = Mathf.Clamp(lookDir.y, -15, 30);
         lookDir.y = Mathf.Clamp(lookDir.y, -5, 30);
-        //Debug.Log("Camera.transform.eulerAngles = " + Camera.transform.eulerAngles);
-        //Camera.transform.Rotate(lookDir.y, 0, 0);
 
         transform.Rotate(0, lookVal.x * Time.deltaTime * lookSensitivity, 0);
         UpdateArrow();
@@ -164,14 +152,20 @@ public class playerInput : MonoBehaviour, Imelee, IBlock
             Camera.transform.eulerAngles.z);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void damage(float dmg)
     {
-        isGrounded = true;
+        playerHealth -= dmg;
+        if (playerHealth < 1)
+        {
+            Die();
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    void Die()
     {
-        isGrounded = false;
+        playerAnimator.Play("die");
     }
+
+
 
 }

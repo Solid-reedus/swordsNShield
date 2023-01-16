@@ -16,7 +16,7 @@ public class AiblockScript : MonoBehaviour
     [SerializeField] private float blockTime = 0.4f;
     [SerializeField] private TwoBoneIKConstraint Constraint;
 
-    private void Start()
+    private void Awake()
     {
         Constraint = GetComponentInChildren<TwoBoneIKConstraint>();
         IBlock = GetComponentInChildren<IBlock>();
@@ -48,9 +48,41 @@ public class AiblockScript : MonoBehaviour
         }
     }
 
+    IEnumerator block()
+    {
+        float time = 0;
+        while (time < blockTime)
+        {
+            Constraint.weight = Mathf.Lerp(0, 1, time / blockTime);
+            time += Time.deltaTime;
+
+            yield return null;
+        }
+        
+        /*
+        while (IBlock.isBlocking)
+        {
+            yield return null;
+        }
+        */
+
+        if (!IBlock.isBlocking)
+        {
+            time = 0;
+            float var;
+            while (time < blockTime)
+            {
+                var = Mathf.Lerp(0, 1, time / blockTime);
+                Constraint.weight = 1 - var;
+                time += Time.deltaTime;
+                yield return null;
+            }
+        }
+    }
+
+    /*
     public void Block()
     {
-        /*
         if (context.performed)
         {
             StartCoroutine(BlockLerp());
@@ -95,9 +127,9 @@ public class AiblockScript : MonoBehaviour
             StartCoroutine(UnBlockLerp());
             IBlock.isBlocking = false;
         }
-        */
 
     }
+    */
 
 
 

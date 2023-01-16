@@ -12,8 +12,8 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
     private Animator Animator;
 
     NavMeshAgent NavMeshAgent;
-    GameObject target;
     meleeScript meleeScript;
+    GameObject target;
 
     private int lookval = 1; 
 
@@ -23,38 +23,17 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
 
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private bool isBlocking = false;
-    /*
-    bool canWalk = true;
+
     bool canSwing = true;
-    bool canBlock = true;
-    */
 
     string enemyTag;
 
-    public bool isSwinging { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     int IdirectionalInput.lookVal { get { return lookval; } }
     bool Imelee.isSwinging { get { return isAttacking; } set { this.isAttacking = value; } }
 
     bool IBlock.isBlocking { get { return isBlocking; } set { this.isBlocking = value; } }
     Collider IBlock.shieldTrigger { get { return shield.GetComponent<Collider>(); } }
-
-
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log($"I am touching {collision}");
-        if (collision.gameObject.tag == enemyTag)
-        {
-            Debug.Log("I am touching the enemy");
-        }
-    }
-    */
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("I am touching the enemy");
-    }
 
     private void Awake()
     {
@@ -78,7 +57,9 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         }
         Colorcoat();
         target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
-        StartCoroutine(KnightAttack());
+
+        //Invoke("KnightAttack", 1);
+        //StartCoroutine(KnightAttack());
     }
 
     void Colorcoat()
@@ -95,30 +76,6 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         shield.transform.GetChild(1).gameObject.SetActive(true);
     }
 
-    /*
-    IEnumerator GoToEnemy(GameObject target)
-    {
-        if (NavMeshAgent.isStopped)
-        {
-            Debug.Log("I should stop");
-            enemyStateVal = 3;
-            yield break;
-        }
-
-        if ( Vector3.Distance(this.transform.position , target.transform.position) < 3.5f)
-        {
-            enemyStateVal = 3;
-            yield break;
-        }
-
-        NavMeshAgent.stoppingDistance = 2.5f;
-        NavMeshAgent.SetDestination(target.transform.position);
-
-        //Debug.Log("I still exist");
-        //yield break;
-    }
-    */
-    
 
     // Update is called once per frame
     void Update()
@@ -126,7 +83,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         if (health > 1)
         {
             KnightNav();
-
+            KnightAttack();
         }
     }
 
@@ -141,25 +98,61 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
 
     void Die()
     {
-        //Animator.applyRootMotion = true;
         Animator.Play("die");
-
+        //Destroy(this);
     }
 
-
-
-    IEnumerator KnightAttack()
+    IEnumerator Timer(bool TimerBool, float timerToWait)
     {
-        if (NavMeshAgent.remainingDistance > 1.5f)
+        //TimerBool = true;
+        yield return new WaitForSeconds(timerToWait);
+        //TimerBool = false;
+        isAttacking = false;
+    }
+
+    void KnightAttack()
+    {
+        if (NavMeshAgent.remainingDistance < 1.5f && !isAttacking)
         {
-            yield return null;
+            isAttacking = true;
+            //Debug.Log("knight is in range");
+            float newAttack = Random.Range(0.1f, 1.5f);
+            lookval = Random.Range(1, 5);
+
+            float dur = 1;
+            switch (lookval)
+            {
+                case 1:
+                {
+                    dur = meleeScript.animList[meleeScript.animNameR];
+                    break;
+                }
+                case 2:
+                {
+                    dur = meleeScript.animList[meleeScript.animNameB];
+                    break;
+                }
+                case 3:
+                {
+                    dur = meleeScript.animList[meleeScript.animNameL];
+                    break;
+                }
+                case 4:
+                {
+                    dur = meleeScript.animList[meleeScript.animNameT];
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            dur += 0.5f;
+
+            StartCoroutine(Timer(isAttacking, dur));
+            //Debug.Log(lookval);
+            meleeScript.SwingSword();
         }
-        float newAttack = Random.Range(0.1f, 1.5f);
-        lookval = Random.Range(1, 4);
-
-        meleeScript.SwingSword();
-
-        yield return new WaitForSeconds(newAttack);
+        //yield return new WaitForSeconds(newAttack);
     }
 
     private void KnightNav()

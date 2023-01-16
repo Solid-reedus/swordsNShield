@@ -7,23 +7,23 @@ public class meleeScript : MonoBehaviour
     public Imelee Imelee;
     public IBlock IBlock;
 
-    [SerializeField] private float damage = 10;
+    [SerializeField] private float damage = 35;
     bool hasSwung = false;
     bool isHit = false;
 
     private string animName = "sword swing";
-    private string animNameR; 
-    private string animNameB; 
-    private string animNameT; 
-    private string animNameL; 
+    public string animNameR; 
+    public string animNameB; 
+    public string animNameT; 
+    public string animNameL; 
 
     //private Collider SwordTrigger;
 
     [SerializeField] private ReturnColliderScript colScript;
     [SerializeField] private Animator animator;
-    Dictionary<string, float> animList = new Dictionary<string, float>();
+    public Dictionary<string, float> animList = new Dictionary<string, float>();
 
-    private void Start()
+    private void Awake()
     {
         animNameR = animName + " R";
         animNameB = animName + " B";
@@ -51,6 +51,7 @@ public class meleeScript : MonoBehaviour
 
     IEnumerator SwingSwordCoroutine(float dur)
     {
+        Debug.Log("SwingSwordCoroutine is run");
         dur *= 100; // ~150
         float time = 0;
 
@@ -83,6 +84,11 @@ public class meleeScript : MonoBehaviour
 
     public void SwingSword()
     {
+        if (IBlock == null)
+        {
+            return;
+        }
+
         if (!IBlock.isBlocking && !hasSwung)
         {
             switch (Imelee.lookVal)

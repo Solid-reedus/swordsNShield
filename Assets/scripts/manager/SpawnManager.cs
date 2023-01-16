@@ -15,11 +15,9 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private GameObject Knight;
 
-
     public List<GameObject> enemies = new List<GameObject>();
     public List<GameObject> allies = new List<GameObject>();
 
-    // Start is called before the first frame update
     void Start()
     {
         /*

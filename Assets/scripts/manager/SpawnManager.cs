@@ -63,11 +63,17 @@ public class SpawnManager : MonoBehaviour
         {
             foreach (var item in enemies)
             {
-                if (item != null && !item.GetComponent<aiScript>().isDead)
+                if (item != null)
                 {
-                    //Debug.Log("enemy found =" + item);
-                    battleIsOver = false;
-                    return battleIsOver;
+                    if (item.GetComponent<aiScript>() != null)
+                    {
+                        if (!item.GetComponent<aiScript>().isDead)
+                        {
+                            //Debug.Log("enemy found =" + item);
+                            battleIsOver = false;
+                            return battleIsOver;
+                        }
+                    }
                 }
             }
             Debug.Log("battle is over");
@@ -76,14 +82,18 @@ public class SpawnManager : MonoBehaviour
         {
             foreach (var item in allies)
             {
-                if (item.GetComponent<aiScript>() == null)
+                if (item.GetComponent<aiScript>() != null)
                 {
-                    battleIsOver = false;
-                    return battleIsOver;
+                    if (!item.GetComponent<aiScript>().isDead)
+                    {
+                        //Debug.Log("enemy found =" + item);
+                        battleIsOver = false;
+                        return battleIsOver;
+                    }
                 }
-                else if (item != null && !item.GetComponent<aiScript>().isDead)
+                else if (!item.GetComponent<playerInput>().isDead)
                 {
-                    //Debug.Log("ally found =" + item);
+                    //Debug.Log("enemy found =" + item);
                     battleIsOver = false;
                     return battleIsOver;
                 }
@@ -147,10 +157,14 @@ public class SpawnManager : MonoBehaviour
             foreach (var item in enemies)
             {
                 tempVal = Vector3.Distance(instigator.position, item.transform.position);
-                if (closest > tempVal && !item.GetComponent<aiScript>().isDead)
+                if (item.GetComponent<aiScript>() != null)
                 {
-                    closest = tempVal;
-                    target = item;
+                    if (!item.GetComponent<aiScript>().isDead)
+                    {
+                        //Debug.Log("enemy found =" + item);
+                        closest = tempVal;
+                        target = item;
+                    }
                 }
             }
         }
@@ -160,7 +174,26 @@ public class SpawnManager : MonoBehaviour
             {
                 tempVal = Vector3.Distance(instigator.position, item.transform.position);
 
+                if (item.GetComponent<aiScript>() != null)
+                {
+                    if (!item.GetComponent<aiScript>().isDead)
+                    {
+                        //Debug.Log("enemy found =" + item);
+                        closest = tempVal;
+                        target = item;
+                    }
+                }
+                else if(item.GetComponent<playerInput>() != null)
+                {
+                    if (!item.GetComponent<playerInput>().isDead)
+                    {
+                        //Debug.Log("enemy found =" + item);
+                        closest = tempVal;
+                        target = item;
+                    }
+                }
 
+                /*
                 if (item.GetComponent<aiScript>() == null)
                 {
                     closest = tempVal;
@@ -171,6 +204,7 @@ public class SpawnManager : MonoBehaviour
                     closest = tempVal;
                     target = item;
                 }
+                */
             }
         }
         else

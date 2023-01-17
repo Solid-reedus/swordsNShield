@@ -94,6 +94,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
     void Die()
     {
         GetComponent<Collider>().enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
         Animator.applyRootMotion = true;
         Animator.Play("no more walking");
         Animator.Play("die");

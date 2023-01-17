@@ -30,6 +30,8 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
     [SerializeField] private float lookThreshold = 0.65f;
     private int lookValInt;
 
+    public bool isDead = false;
+
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool isSwining = false;
 
@@ -66,6 +68,8 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         }
         */
     }
+
+
 
     public void Move(InputAction.CallbackContext value)
     {
@@ -171,6 +175,7 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         playerAnimator.Play("die");
         GetComponent<playerInput>().enabled = false;
         lookSensitivity = 0;
+        isDead = true;
     }
 
 

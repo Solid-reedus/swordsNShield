@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!65 &6219922137703954441
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123780038696283067}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.3906171, y: 0.2249269, z: 2.2626126}
+  m_Center: {x: -0.000000079511544, y: -0.11246337, z: -0.24129057}
 --- !u!64 &970148156750554402
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -416,6 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169a776bfa563004ca59bcfcd9fa404c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealth: 100
   Camera: {fileID: 970148156852106675}
   groundCheck: {fileID: 970148157256780636}
   jumpForce: 50
@@ -429,6 +443,7 @@ MonoBehaviour:
   shieldTrigger: {fileID: 0}
   lookThreshold: 0.4
   isBlocking: 0
+  isSwining: 0
 --- !u!54 &970148155951811056
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -471,6 +486,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0342558b4294865458e1b1f90220aaa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animNameR: 
+  animNameB: 
+  animNameT: 
+  animNameL: 
   colScript: {fileID: 0}
   animator: {fileID: 0}
 --- !u!114 &970148155951811070
@@ -1208,6 +1227,13 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 6fed800cd3289034bb214b0662e633cf, type: 2}
+    - target: {fileID: 4540229000190281644, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Elbow_R'\n\tFrom animation clip 'sword swing
+        T'"
+      objectReference: {fileID: 0}
     - target: {fileID: 5814845182013857403, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1238,6 +1264,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+--- !u!4 &5078309655144902304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5408663870200538173, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+  m_PrefabInstance: {fileID: 970148156011694749}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5643769342004723556 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4838021359202055673, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+  m_PrefabInstance: {fileID: 970148156011694749}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &10264851219615187 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 960075172793927502, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
@@ -1253,24 +1289,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
   m_PrefabInstance: {fileID: 970148156011694749}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1570567566683291374 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
-  m_PrefabInstance: {fileID: 970148156011694749}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2339514689083440010 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3242882747939926295, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
   m_PrefabInstance: {fileID: 970148156011694749}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5078309655144902304 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5408663870200538173, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
-  m_PrefabInstance: {fileID: 970148156011694749}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5643769342004723556 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4838021359202055673, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+--- !u!1 &1570567566683291374 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
   m_PrefabInstance: {fileID: 970148156011694749}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &970148156127680852
@@ -1414,5 +1440,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_shieldCross
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f414bd6ee7d39cd4b8151019674a25ce, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f414bd6ee7d39cd4b8151019674a25ce, type: 3}
+--- !u!1 &123780038696283067 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f414bd6ee7d39cd4b8151019674a25ce, type: 3}
+  m_PrefabInstance: {fileID: 970148157458192106}
+  m_PrefabAsset: {fileID: 0}

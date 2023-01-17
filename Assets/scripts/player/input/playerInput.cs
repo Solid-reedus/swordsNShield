@@ -173,7 +173,7 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         playerAnimator.applyRootMotion = true;
         playerAnimator.Play("no more walking");
         playerAnimator.Play("die");
-        GetComponent<playerInput>().enabled = false;
+        GetComponent<PlayerInput>().enabled = false;
         lookSensitivity = 0;
         isDead = true;
     }

@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
 {
+
     [SerializeField] private GameObject armour;
     [SerializeField] private GameObject shield;
     [SerializeField] private Material enemyMaterial;
@@ -15,7 +16,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
     meleeScript meleeScript;
     GameObject target;
 
-    private int lookval = 1; 
+    private int lookval = 3; 
 
     [SerializeField] private int enemyStateVal = 1;
     [SerializeField] private float health = 100;
@@ -41,7 +42,6 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         SpawnManager = FindObjectOfType<SpawnManager>();
         Animator = GetComponentInChildren<Animator>();
         meleeScript = GetComponent<meleeScript>();
-        //NavMeshAgent.stoppingDistance = 1.3f;
 
         if (tag == "ally")
         {
@@ -116,9 +116,11 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
             isAttacking = true;
             //Debug.Log("knight is in range");
             float newAttack = Random.Range(0.1f, 1.5f);
-            lookval = Random.Range(1, 5);
+            //lookval = Random.Range(1, 5);
 
             float dur = 1;
+
+
             switch (lookval)
             {
                 case 1:

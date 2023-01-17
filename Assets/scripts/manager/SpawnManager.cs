@@ -192,19 +192,6 @@ public class SpawnManager : MonoBehaviour
                         target = item;
                     }
                 }
-
-                /*
-                if (item.GetComponent<aiScript>() == null)
-                {
-                    closest = tempVal;
-                    target = item;
-                }
-                else if (closest > tempVal && !item.GetComponent<aiScript>().isDead)
-                {
-                    closest = tempVal;
-                    target = item;
-                }
-                */
             }
         }
         else

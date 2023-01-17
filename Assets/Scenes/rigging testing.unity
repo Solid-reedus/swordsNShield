@@ -1137,15 +1137,13 @@ PrefabInstance:
     - target: {fileID: 4540229000190281644, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 6fed800cd3289034bb214b0662e633cf, type: 2}
+      objectReference: {fileID: 9100000, guid: 8d2d3e411029074438ef3124d30160b2, type: 2}
     - target: {fileID: 4540229000190281644, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_WarningMessage
       value: "\nBinding warning: Some generic clip(s) animate transforms that are
         already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Elbow_R'\n\tTransform 'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Shoulder_L'\n\tFrom animation clip 'sword swing T'"
+        by Humanoid clips.\n\tTransform 'Elbow_R'\n\tFrom animation clip 'sword swing
+        T'"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}

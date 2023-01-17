@@ -79,6 +79,20 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         {
             KnightNav();
             KnightAttack();
+            KnightAnim();
+        }
+    }
+
+    void KnightAnim()
+    {
+        if (NavMeshAgent.remainingDistance > NavMeshAgent.stoppingDistance
+            || target == null)
+        {
+            Animator.SetFloat("inputY", 1);
+        }
+        else
+        {
+            Animator.SetFloat("inputY", 0);
         }
     }
 
@@ -106,6 +120,28 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         //TimerBool = true;
         yield return new WaitForSeconds(timerToWait);
         //TimerBool = false;
+
+        if (target.GetComponent<aiScript>() != null)
+        {
+            if (target.GetComponent<aiScript>().isDead)
+            {
+                target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
+            }
+        }
+        else if (target.GetComponent<playerInput>().isDead)
+        {
+            target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
+            //Debug.Log("enemy found =" + item);
+        }
+        else
+        {
+            enemyStateVal = 1;
+        }
+
+        if (target == null)
+        {
+            enemyStateVal = 1;
+        }
         isAttacking = false;
     }
 
@@ -116,7 +152,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
             isAttacking = true;
             //Debug.Log("knight is in range");
             float newAttack = Random.Range(0.1f, 1.5f);
-            //lookval = Random.Range(1, 5);
+            lookval = Random.Range(1, 5);
 
             float dur = 1;
 
@@ -176,10 +212,6 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
                 target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
                 enemyStateVal = 3;
                 break;
-
-                //StartCoroutine(GoToEnemy(
-                //SpawnManager.GetClosestEnemy(this.transform, enemyTag)));
-                // go position of the player unit it hits a trigger
             }
             // go to target
             case 3:

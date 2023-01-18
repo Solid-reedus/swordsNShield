@@ -720,11 +720,11 @@ PrefabInstance:
       objectReference: {fileID: 4873625291157416119, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: allyCount
-      value: 30
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: enemyCount
-      value: 30
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306099, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: m_RootOrder

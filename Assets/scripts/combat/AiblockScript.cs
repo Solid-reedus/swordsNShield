@@ -16,6 +16,8 @@ public class AiblockScript : MonoBehaviour
     [SerializeField] private float blockTime = 0.4f;
     [SerializeField] private TwoBoneIKConstraint Constraint;
 
+    private bool fullyBlocked = false;
+
     private void Awake()
     {
         Constraint = GetComponentInChildren<TwoBoneIKConstraint>();
@@ -48,8 +50,9 @@ public class AiblockScript : MonoBehaviour
         }
     }
 
-    IEnumerator block()
+    public IEnumerator block(int dir)
     {
+
         float time = 0;
         while (time < blockTime)
         {
@@ -58,15 +61,43 @@ public class AiblockScript : MonoBehaviour
 
             yield return null;
         }
-        
-        /*
-        while (IBlock.isBlocking)
-        {
-            yield return null;
-        }
-        */
 
-        if (!IBlock.isBlocking)
+        switch (dir)
+        {
+            case 1:
+            {
+                riggingTarget.position = blockTransformR.position;
+                riggingTarget.eulerAngles = blockTransformR.eulerAngles;
+                break;
+            }
+            case 2:
+            {
+                riggingTarget.position = blockTransformB.position;
+                riggingTarget.eulerAngles = blockTransformB.eulerAngles;
+                break;
+            }
+            case 3:
+            {
+                riggingTarget.position = blockTransformL.position;
+                riggingTarget.eulerAngles = blockTransformL.eulerAngles;
+                break;
+            }
+            case 4:
+            {
+                riggingTarget.position = blockTransformT.position;
+                riggingTarget.eulerAngles = blockTransformT.eulerAngles;
+                break;
+            }
+            default:
+                break;
+        }
+
+        if (Constraint.weight > 0.94f)
+        {
+            fullyBlocked = true;
+        }
+
+        if (!IBlock.isBlocking && fullyBlocked)
         {
             time = 0;
             float var;
@@ -79,58 +110,5 @@ public class AiblockScript : MonoBehaviour
             }
         }
     }
-
-    /*
-    public void Block()
-    {
-        if (context.performed)
-        {
-            StartCoroutine(BlockLerp());
-            IBlock.isBlocking = true;
-        }
-
-        if (IBlock.isBlocking == false)
-        {
-            switch (IBlock.lookVal)
-            {
-                case 1:
-                    {
-                        riggingTarget.position = blockTransformR.position;
-                        riggingTarget.eulerAngles = blockTransformR.eulerAngles;
-                        break;
-                    }
-                case 2:
-                    {
-                        riggingTarget.position = blockTransformB.position;
-                        riggingTarget.eulerAngles = blockTransformB.eulerAngles;
-                        break;
-                    }
-                case 3:
-                    {
-                        riggingTarget.position = blockTransformL.position;
-                        riggingTarget.eulerAngles = blockTransformL.eulerAngles;
-                        break;
-                    }
-                case 4:
-                    {
-                        riggingTarget.position = blockTransformT.position;
-                        riggingTarget.eulerAngles = blockTransformT.eulerAngles;
-                        break;
-                    }
-                default:
-                    break;
-            }
-        }
-
-        if (context.canceled)
-        {
-            StartCoroutine(UnBlockLerp());
-            IBlock.isBlocking = false;
-        }
-
-    }
-    */
-
-
 
 }

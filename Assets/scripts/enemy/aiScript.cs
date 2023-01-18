@@ -5,30 +5,29 @@ using UnityEngine.AI;
 
 public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
 {
-
     [SerializeField] private GameObject armour;
     [SerializeField] private GameObject shield;
     [SerializeField] private Material enemyMaterial;
-    //[SerializeField] private Collider collider;
-    private Animator Animator;
 
+    AiblockScript AiblockScript;
     NavMeshAgent NavMeshAgent;
+    SpawnManager SpawnManager;
     meleeScript meleeScript;
     GameObject target;
+    Animator Animator;
 
-    private int lookval = 3; 
-
-    [SerializeField] private int enemyStateVal = 1;
-    [SerializeField] private float health = 100;
-    SpawnManager SpawnManager;
-
+    [SerializeField] private bool isTryingToAttack = false;
+    [SerializeField] private bool isTryingToBlock = false;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private bool isBlocking = false;
 
-    bool canSwing = true;
-    public bool isDead = false;
+    private int enemyStateVal = 1;
+    [SerializeField] private float health = 100;
+    private int lookval = 3; 
+    private string enemyTag;
+    private bool battleIsOver = false;
 
-    string enemyTag;
+    public bool isDead = false;
 
     int IdirectionalInput.lookVal { get { return lookval; } }
     bool Imelee.isSwinging { get { return isAttacking; } set { this.isAttacking = value; } }
@@ -42,6 +41,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         SpawnManager = FindObjectOfType<SpawnManager>();
         Animator = GetComponentInChildren<Animator>();
         meleeScript = GetComponent<meleeScript>();
+        AiblockScript = GetComponent<AiblockScript>();
 
         if (tag == "ally")
         {
@@ -73,10 +73,19 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         shield.transform.GetChild(1).gameObject.SetActive(true);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == enemyTag)
+        {
+            target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
+        }
+    }
+
     void Update()
     {
         if (health > 1)
         {
+            KnightBlock();
             KnightNav();
             KnightAttack();
             KnightAnim();
@@ -86,6 +95,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
     void KnightAnim()
     {
         if (NavMeshAgent.remainingDistance > NavMeshAgent.stoppingDistance
+            || !battleIsOver
             || target == null)
         {
             Animator.SetFloat("inputY", 1);
@@ -99,6 +109,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
     public void damage(float dmg)
     {
         health -= dmg;
+        Animator.Play("hit");
         if (health < 1)
         {
             Die();
@@ -115,43 +126,89 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         isDead = true;
     }
 
-    IEnumerator Timer(bool TimerBool, float timerToWait)
+    private void KnightNav()
     {
-        //TimerBool = true;
-        yield return new WaitForSeconds(timerToWait);
-        //TimerBool = false;
-
-        if (target.GetComponent<aiScript>() != null)
+        switch (enemyStateVal)
         {
-            if (target.GetComponent<aiScript>().isDead)
+            // idle
+            case 1:
+            {
+                if (SpawnManager.BattleIsOver(enemyTag))
+                {
+                    battleIsOver = true;
+                    if (!isDead)
+                    {
+                        Animator.Play("wave arm");
+                    }
+                    enemyStateVal = 5;
+                    break;
+                }
+                enemyStateVal = 2;
+                break;
+            }
+            // choose target
+            case 2:
             {
                 target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
+                enemyStateVal = 3;
+                break;
             }
-        }
-        else if (target.GetComponent<playerInput>().isDead)
-        {
-            target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
-            //Debug.Log("enemy found =" + item);
-        }
-        else
-        {
-            enemyStateVal = 1;
+            // go to target
+            case 3:
+            {
+                if (target == null)
+                {
+                    enemyStateVal = 1;
+                    break;
+                }
+                NavMeshAgent.SetDestination(target.transform.position);
+                this.transform.LookAt(target.transform);
+                break;
+            }
+
+            // ! work in progress !
+            // back off
+            case 4:
+            {
+                if (NavMeshAgent.remainingDistance > 1.5)
+                {
+                    NavMeshAgent.SetDestination(target.transform.position);
+                    enemyStateVal = 3;
+                    break;
+                }
+                /*
+                //local vec to glo
+                Vector3 goBack = this.transform.InverseTransformDirection(Vector3.forward);
+                goBack.x -= 10;
+                Debug.Log($"goBack = {goBack} and transformpoint {transform.TransformPoint(goBack)}");
+                NavMeshAgent.SetDestination(transform.TransformPoint(goBack));
+                */
+
+                    //transform.TransformPoint
+
+                    //NavMeshAgent.SetDestination(-target.transform.position);
+                    // start a couroutine when a sword is swung after a random amount of seconds to block  
+                    break;
+            }
+            case 5:
+            {
+                break;
+            }
+
         }
 
-        if (target == null)
-        {
-            enemyStateVal = 1;
-        }
-        isAttacking = false;
+
     }
 
     void KnightAttack()
     {
-        if (NavMeshAgent.remainingDistance < 1.5f && !isAttacking)
+        if (NavMeshAgent.remainingDistance < 1.5f 
+            && !isTryingToAttack
+            && target != null)
         {
-            isAttacking = true;
+            
             //Debug.Log("knight is in range");
-            float newAttack = Random.Range(0.1f, 1.5f);
+            float newAttack = Random.Range(0.3f, 3.5f);
             lookval = Random.Range(1, 5);
 
             float dur = 1;
@@ -185,89 +242,84 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
 
             dur += 0.5f;
 
-            StartCoroutine(Timer(isAttacking, dur));
+            StartCoroutine(SwordTimer(newAttack , dur));
+            isTryingToAttack = true;
             //Debug.Log(lookval);
-            meleeScript.SwingSword();
+            
         }
         //yield return new WaitForSeconds(newAttack);
     }
-
-    private void KnightNav()
+    
+    IEnumerator SwordTimer(float delay ,float timerToWait)
     {
-        switch (enemyStateVal)
+        yield return new WaitForSeconds(delay);
+
+        meleeScript.SwingSword();
+
+        yield return new WaitForSeconds(timerToWait);
+
+        if (target.GetComponent<aiScript>() != null)
         {
-            // idle
-            case 1:
-            {
-                if (SpawnManager.BattleIsOver(enemyTag))
-                {
-                    break;
-                }
-                enemyStateVal = 2;
-                break;
-            }
-            // choose target
-            case 2:
+            if (target.GetComponent<aiScript>().isDead)
             {
                 target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
-                enemyStateVal = 3;
-                break;
             }
-            // go to target
-            case 3:
-            {
-                //target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
-                if (target == null)
-                {
-                    enemyStateVal = 1;
-                    break;
-                }
-                NavMeshAgent.SetDestination(target.transform.position);
-                //Debug.Log("remainingDistance =" + NavMeshAgent.remainingDistance);
-                this.transform.LookAt(target.transform);
-
-                /*
-                if (!isAttacking && NavMeshAgent.remainingDistance < 1)
-                {
-                    Vector3 goBack = this.transform.InverseTransformDirection(Vector3.forward);
-                    goBack.x -= 10;
-                    Debug.Log($"goBack = {goBack} and transformpoint {transform.TransformPoint(goBack)}");
-                    NavMeshAgent.SetDestination(transform.TransformPoint(goBack));
-                    enemyStateVal = 4;
-                }
-                */
-                break;
-            }
-
-            // ! work in progress !
-            // back off
-            case 4:
-            {
-                if (NavMeshAgent.remainingDistance > 1.5)
-                {
-                    NavMeshAgent.SetDestination(target.transform.position);
-                    enemyStateVal = 3;
-                    break;
-                }
-                /*
-                //local vec to glo
-                Vector3 goBack = this.transform.InverseTransformDirection(Vector3.forward);
-                goBack.x -= 10;
-                Debug.Log($"goBack = {goBack} and transformpoint {transform.TransformPoint(goBack)}");
-                NavMeshAgent.SetDestination(transform.TransformPoint(goBack));
-                */
-
-                    //transform.TransformPoint
-
-                    //NavMeshAgent.SetDestination(-target.transform.position);
-                    // start a couroutine when a sword is swung after a random amount of seconds to block  
-                    break;
-            }
-
+        }
+        else if (target.GetComponent<playerInput>().isDead)
+        {
+            target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
+        }
+        else
+        {
+            enemyStateVal = 1;
         }
 
-
+        if (target == null)
+        {
+            enemyStateVal = 1;
+        }
+        isTryingToAttack = false;
+        isAttacking = false;
     }
 
+    void KnightBlock()
+    {
+        if (target == null || isBlocking)
+        {
+            return;
+        }
+
+        Debug.Log($"target swinging is {target.gameObject.name} and swinging is {target.gameObject.GetComponent<Imelee>().isSwinging}");
+
+        if (target.gameObject.GetComponent<Imelee>().isSwinging && !isTryingToBlock)
+        {
+            Debug.Log("trying to block");
+            float reactionTime = Random.Range(0.2f, 0.7f);
+
+            float dur = Random.Range(1.2f, 2.6f);
+            isTryingToBlock = true;
+
+            StartCoroutine(SHieldTimer(reactionTime, dur));
+        }
+        
+    }
+
+    IEnumerator SHieldTimer(float reactionTime, float dur)
+    {
+        yield return new WaitForSeconds(reactionTime);
+
+        int chance = Random.Range(1, 4);
+        if (chance != 1)
+        {
+            int dir = target.GetComponent<IdirectionalInput>().lookVal;
+            isBlocking = true;
+            StartCoroutine(AiblockScript.block(dir));
+            Debug.Log("I am going to block");
+        }
+
+        yield return new WaitForSeconds(dur);
+        isTryingToBlock = false;
+        isBlocking = false;
+    }
     
 }

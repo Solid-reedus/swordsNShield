@@ -8,8 +8,9 @@ public class meleeScript : MonoBehaviour
     public IBlock IBlock;
 
     //[SerializeField] private float damage = 35;
-    float damage = 35;
-    bool hasSwung = false;
+    float minDamage = 20;
+    float maxDamage = 45;
+    //bool hasSwung = false;
     bool isHit = false;
 
     private string animName = "sword swing";
@@ -49,12 +50,13 @@ public class meleeScript : MonoBehaviour
     {
         yield return new WaitForSeconds(dur + 0.25f);
         isHit = false;
-        hasSwung = false;
+        Imelee.isSwinging = false;
         yield return null;
     }
 
     IEnumerator SwingSwordCoroutine(float dur, float start, float end)
     {
+        Imelee.isSwinging = true;
         //Debug.Log("SwingSwordCoroutine is run");
         dur *= 100; // ~150
         float time = 0;
@@ -73,9 +75,10 @@ public class meleeScript : MonoBehaviour
                 if (colScript.Collider.GetComponent<IdamageAble>() != null 
                     && colScript.Collider.tag == Imelee.enemyTag)
                 {
-                    Debug.Log($"enemy = {colScript.Collider.name}");
+                    //Debug.Log($"enemy = {colScript.Collider.name}");
                     IdamageAble damageAble = colScript.Collider.GetComponent<IdamageAble>();
-                    damageAble.damage(damage);
+                    float dmg = Random.Range(minDamage, maxDamage);
+                    damageAble.damage(dmg);
                     colScript.Collider = null;
                     //Debug.Log($"isHit = {isHit} damageAble = {damageAble}");
                     isHit = true;
@@ -83,7 +86,7 @@ public class meleeScript : MonoBehaviour
                 }
                 else if (colScript.Collider.tag == "shield")
                 {
-                    Debug.Log($"shield = {colScript.Collider.name}");
+                    //Debug.Log($"shield = {colScript.Collider.name}");
                     isHit = true;
                 }
             }
@@ -107,7 +110,7 @@ public class meleeScript : MonoBehaviour
         T 31 41  56 | 0.55 0.73
         */
 
-        if (!IBlock.isBlocking && !hasSwung)
+        if (!IBlock.isBlocking && !Imelee.isSwinging)
         {
             switch (Imelee.lookVal)
             {

@@ -57,19 +57,6 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         playerRigidbody.AddRelativeForce(Time.deltaTime * movementValue * WalkForce, ForceMode.Impulse);
     }
 
-    public void Jump(InputAction.CallbackContext context)
-    {
-
-        /*
-        Debug.Log("context =" + context);
-        if (isGrounded == true)
-        {
-            playerRigidbody.AddForce(Time.deltaTime * Vector3.up * jumpForce, ForceMode.Impulse);
-        }
-        */
-    }
-
-
 
     public void Move(InputAction.CallbackContext value)
     {
@@ -162,6 +149,7 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
     public void damage(float dmg)
     {
         playerHealth -= dmg;
+        playerAnimator.Play("hit");
         if (playerHealth < 1)
         {
             Die();

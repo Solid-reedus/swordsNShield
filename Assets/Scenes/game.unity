@@ -512,11 +512,11 @@ PrefabInstance:
       objectReference: {fileID: 4873625291157416119, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: allyCount
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306098, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: enemyCount
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2001794534105306099, guid: 89772a0484aa24e489f89871eff5ccb5, type: 3}
       propertyPath: m_RootOrder
@@ -639,6 +639,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4814349248862069554, guid: 9f8a142103f1ffc44970d4f6ead11e7a, type: 3}
+      propertyPath: playerHealth
+      value: 9999
+      objectReference: {fileID: 0}
     - target: {fileID: 4814349248862069558, guid: 9f8a142103f1ffc44970d4f6ead11e7a, type: 3}
       propertyPath: m_Name
       value: player
@@ -673,6 +677,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2964155725327434022, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
+      propertyPath: health
+      value: 9999
+      objectReference: {fileID: 0}
     - target: {fileID: 3095491368902402904, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: Collider
       value: 
@@ -727,7 +735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4873625291157416119, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4873625291157416119, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: m_TagString
@@ -739,15 +747,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5788293988659643670, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5788293988659643670, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5788293988659643670, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788293988659643670, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8980382548544269427, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: m_WarningMessage

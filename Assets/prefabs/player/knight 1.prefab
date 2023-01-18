@@ -403,10 +403,11 @@ MonoBehaviour:
   armour: {fileID: 3307659278326973569}
   shield: {fileID: 2111564378519900207}
   enemyMaterial: {fileID: 2100000, guid: 0ef961eb2d01aaa4ea61c08670be6afa, type: 2}
-  enemyStateVal: 1
-  health: 100
+  isTryingToAttack: 0
+  isTryingToBlock: 0
   isAttacking: 0
   isBlocking: 0
+  health: 100
   isDead: 0
 --- !u!195 &2051702455283345344
 NavMeshAgent:
@@ -442,13 +443,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d30bc80e0c14a4fa950bda53965e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  riggingTarget: {fileID: 0}
-  blockTransformR: {fileID: 0}
-  blockTransformB: {fileID: 0}
-  blockTransformL: {fileID: 0}
-  blockTransformT: {fileID: 0}
+  riggingTarget: {fileID: 4873625290069462384}
+  blockTransformR: {fileID: 4873625290827559391}
+  blockTransformB: {fileID: 4873625290721376630}
+  blockTransformL: {fileID: 4873625291015050687}
+  blockTransformT: {fileID: 4873625291186309158}
   blockTime: 0.4
-  Constraint: {fileID: 0}
+  Constraint: {fileID: 4873625290850520040}
 --- !u!54 &2406631833448340096
 Rigidbody:
   m_ObjectHideFlags: 0

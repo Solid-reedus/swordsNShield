@@ -20,20 +20,8 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        /*
-        Vector3 lenghtA = new Vector3(spawnA.position.x , 0 , spawnA.position.z);
-        Vector3 lenghtB = new Vector3(spawnB.position.x , 0 , spawnA.position.z);
-
-        Vector3 widthA = new Vector3(spawnA.position.x , 0 , spawnA.position.z);
-        Vector3 widthB = new Vector3(spawnA.position.x , 0 , spawnB.position.z);
-
-        Debug.Log($"height of spawn {Vector3.Distance(lenghtA, lenghtB)} and with is {Vector3.Distance(widthA, widthB)}");
-        Debug.Log("the surface of the spawn is" + Vector3.Distance(lenghtA, lenghtB) * Vector3.Distance(widthA, widthB));
-        */
-
         SpawnKnight("enemy", enemyCount, enemySpawnA.position, enemySpawnB.position);
         SpawnKnight("ally", allyCount, AllySpawnA.position, AllySpawnB.position);
-
 
         GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("enemy");
         GameObject[] allAllies = GameObject.FindGameObjectsWithTag("ally");

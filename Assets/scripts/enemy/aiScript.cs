@@ -35,6 +35,10 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
     bool IBlock.isBlocking { get { return isBlocking; } set { this.isBlocking = value; } }
     Collider IBlock.shieldTrigger { get { return shield.GetComponent<Collider>(); } }
 
+    /*
+    when the AI is "awake" it will define who the enemy is based on its own tag
+    if the AI is a "enemy" it will also recolor it self with red
+    */
     private void Awake()
     {
         NavMeshAgent = GetComponent<NavMeshAgent>();
@@ -59,6 +63,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         target = SpawnManager.GetClosestEnemy(this.transform, enemyTag);
     }
 
+    //this code gets the body armour and shield and recolors it
     void Colorcoat()
     {
         if (this.tag == "ally")
@@ -73,6 +78,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         shield.transform.GetChild(1).gameObject.SetActive(true);
     }
 
+    // this code will retargert a target when it collides with a enemy
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == enemyTag)
@@ -81,6 +87,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         }
     }
 
+    //if the enemy is alive it will prefroms the listed methods
     void Update()
     {
         if (health > 1)
@@ -92,6 +99,11 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         }
     }
 
+    /*
+    this code sets the walking varables to 1 (walk forward) if the NavMeshAgents distance from
+    the target is bigger than the stoping its distance,
+    the battle isnt over or there isnt a target
+    */
     void KnightAnim()
     {
         if (NavMeshAgent.remainingDistance > NavMeshAgent.stoppingDistance
@@ -106,6 +118,11 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         }
     }
 
+    /*
+    this is a implementation of the IdamageAble interface and
+    allows this method to be called as a interface instead the whole script
+    this script damages the AI
+    */
     public void damage(float dmg)
     {
         health -= dmg;
@@ -116,6 +133,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         }
     }
 
+    //if the AI is dead it will disable most things and set the isDead bool to true
     void Die()
     {
         GetComponent<Collider>().enabled = false;
@@ -127,6 +145,13 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         SpawnManager.BattleIsOver(enemyTag);
     }
 
+    /*
+    the knight has 4 states
+    1 - idle and wave arm if the AI has won
+    2 - choose a target if there are any
+    3 - as long as the knight has target that isnt death it will follow it
+    4 - do nothing
+    */
     private void KnightNav()
     {
         switch (enemyStateVal)
@@ -141,7 +166,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
                     {
                         Animator.Play("wave arm");
                     }
-                    enemyStateVal = 5;
+                    enemyStateVal = 4;
                     break;
                 }
                 enemyStateVal = 2;
@@ -166,55 +191,29 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
                 this.transform.LookAt(target.transform);
                 break;
             }
-
-            // ! work in progress !
-            // back off
             case 4:
-            {
-                if (NavMeshAgent.remainingDistance > 1.5)
-                {
-                    NavMeshAgent.SetDestination(target.transform.position);
-                    enemyStateVal = 3;
-                    break;
-                }
-                /*
-                //local vec to glo
-                Vector3 goBack = this.transform.InverseTransformDirection(Vector3.forward);
-                goBack.x -= 10;
-                Debug.Log($"goBack = {goBack} and transformpoint {transform.TransformPoint(goBack)}");
-                NavMeshAgent.SetDestination(transform.TransformPoint(goBack));
-                */
-
-                    //transform.TransformPoint
-
-                    //NavMeshAgent.SetDestination(-target.transform.position);
-                    // start a couroutine when a sword is swung after a random amount of seconds to block  
-                    break;
-            }
-            case 5:
             {
                 break;
             }
-
         }
-
-
     }
 
+    /*
+    if the knight is in range, isnt already attacking and has a target
+    he will attack
+    based on newAttack
+    and will choose direction based an random number between 1 and 4.
+    and will start the SwordTimer coroutine
+    */
     void KnightAttack()
     {
         if (NavMeshAgent.remainingDistance < 1.5f 
             && !isTryingToAttack
             && target != null)
         {
-            
-            //Debug.Log("knight is in range");
             float newAttack = Random.Range(0.3f, 3.5f);
             lookval = Random.Range(1, 5);
-
             float dur = 1;
-
-
             switch (lookval)
             {
                 case 1:
@@ -240,17 +239,15 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
                 default:
                     break;
             }
-
             dur += 0.5f;
 
             StartCoroutine(SwordTimer(newAttack , dur));
             isTryingToAttack = true;
-            //Debug.Log(lookval);
-            
         }
-        //yield return new WaitForSeconds(newAttack);
     }
-    
+
+    //this timer will keep track of the knights atempt to swing his sword and the swing it self
+    //to separate attack between each other
     IEnumerator SwordTimer(float delay ,float timerToWait)
     {
         yield return new WaitForSeconds(delay);
@@ -283,6 +280,10 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         isAttacking = false;
     }
 
+    /*
+    if the enemy isnt already swinging its sword it will try to block the enemies attack
+    by gettings the enemies sword swing direction with a delay and a block time 
+    */
     void KnightBlock()
     {
         if (target == null || isBlocking)
@@ -292,26 +293,28 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
 
         if (target.gameObject.GetComponent<Imelee>().isSwinging && !isTryingToBlock)
         {
+            //this the AI's reaction time
             float reactionTime = Random.Range(0.2f, 0.7f);
+            //this is the duration of the block
             float dur = Random.Range(1.2f, 2.6f);
             isTryingToBlock = true;
 
-            StartCoroutine(SHieldTimer(reactionTime, dur));
+            StartCoroutine(ShieldTimer(reactionTime, dur));
         }
         
     }
 
-    IEnumerator SHieldTimer(float reactionTime, float dur)
+    //this coroutine will try (2/3 chance by design) to block the enemy sword swing
+    IEnumerator ShieldTimer(float reactionTime, float dur)
     {
         yield return new WaitForSeconds(reactionTime);
-
+        //this code adds a 1/3 chance the enemy wont block at all
         int chance = Random.Range(1, 4);
         if (chance != 1)
         {
             int dir = target.GetComponent<IdirectionalInput>().lookVal;
             isBlocking = true;
             StartCoroutine(AiblockScript.block(dir));
-            Debug.Log("I am going to block");
         }
 
         yield return new WaitForSeconds(dur);

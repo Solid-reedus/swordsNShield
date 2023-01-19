@@ -5,5 +5,4 @@ using UnityEngine;
 public interface IdamageAble
 {
     void damage(float dmg);
-
 }

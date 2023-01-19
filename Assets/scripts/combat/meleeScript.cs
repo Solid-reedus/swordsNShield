@@ -7,10 +7,8 @@ public class meleeScript : MonoBehaviour
     public Imelee Imelee;
     public IBlock IBlock;
 
-    //[SerializeField] private float damage = 35;
     float minDamage = 20;
     float maxDamage = 45;
-    //bool hasSwung = false;
     bool isHit = false;
 
     private string animName = "sword swing";
@@ -19,13 +17,10 @@ public class meleeScript : MonoBehaviour
     public string animNameT; 
     public string animNameL; 
 
-    //private Collider SwordTrigger;
-
     [SerializeField] private ReturnColliderScript colScript;
     [SerializeField] private Animator animator;
 
     public Dictionary<string, float> animList = new Dictionary<string, float>();
-
 
     private void Awake()
     {
@@ -39,6 +34,7 @@ public class meleeScript : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         colScript = GetComponentInChildren<ReturnColliderScript>();
 
+        //this code adds entries into the animList Dictionary
         foreach (var item in animator.runtimeAnimatorController.animationClips)
         {
             animList.Add(item.name, item.length);
@@ -46,6 +42,7 @@ public class meleeScript : MonoBehaviour
 
     }
 
+    //this coroutine prevents the player or ai to swing their sword rapidly
     IEnumerator WaitForSecondSwing(float dur)
     {
         yield return new WaitForSeconds(dur + 0.25f);
@@ -54,6 +51,12 @@ public class meleeScript : MonoBehaviour
         yield return null;
     }
 
+    /*
+    this Coroutine plays a swing animation based on the direction value
+    and checks for collisions between 2 specified values (float start, float end) a start 
+    and end value.
+    this can be used when a sword swing should and shouldnt count
+    */
     IEnumerator SwingSwordCoroutine(float dur, float start, float end)
     {
         Imelee.isSwinging = true;
@@ -69,23 +72,17 @@ public class meleeScript : MonoBehaviour
                 && time < dur * end
                 )
             {
-                //Debug.Log($"colScript.Collider = {colScript.Collider}");
-
                 if (colScript.Collider.GetComponent<IdamageAble>() != null 
                     && colScript.Collider.tag == Imelee.enemyTag)
                 {
-                    Debug.Log($"enemy = {colScript.Collider.name}");
                     IdamageAble damageAble = colScript.Collider.GetComponent<IdamageAble>();
                     float dmg = Random.Range(minDamage, maxDamage);
                     damageAble.damage(dmg);
                     colScript.Collider = null;
-                    //Debug.Log($"isHit = {isHit} damageAble = {damageAble}");
                     isHit = true;
-                    //yield break;
                 }
                 else if (colScript.Collider.tag == "shield")
                 {
-                    Debug.Log($"shield = {colScript.Collider.name}");
                     isHit = true;
                 }
             }
@@ -93,21 +90,17 @@ public class meleeScript : MonoBehaviour
         }
     }
 
+    /*
+    this code when called (by player or ai) if not blocking will start the SwingSwordCoroutine
+    and WaitForSecondSwing Coroutines.
+    the one Coroutine will register a hit and the other will count down for the next possible swing
+    */
     public void SwingSword()
     {
         if (IBlock == null)
         {
             return;
         }
-
-        /*
-          S  E   T  | S    E
-        -----------------------
-        L 5  16  46 | 0.1  0.35
-        R 18 24  43 | 0.4  0.55
-        B 15 21  28 | 0.54 0.75
-        T 31 41  56 | 0.55 0.73
-        */
 
         if (!IBlock.isBlocking && !Imelee.isSwinging)
         {

@@ -14,8 +14,6 @@ public class blockScript : MonoBehaviour
     [SerializeField] private Transform blockTransformL;
     [SerializeField] private Transform blockTransformT;
 
-    //bool movingshield = false;
-
     [SerializeField] private float blockTime = 0.4f;
     [SerializeField] private TwoBoneIKConstraint Constraint;
 
@@ -26,31 +24,13 @@ public class blockScript : MonoBehaviour
         Constraint.weight = 0;
     }
 
-    IEnumerator UnBlockLerp()
-    {
-        float time = 0;
-        float var;
-        while (time < blockTime)
-        {
-            var = Mathf.Lerp(0, 1, time / blockTime);
-            Constraint.weight = 1 - var;
-            time += Time.deltaTime;
-            yield return null;
-        }
-    }
+    
 
-    IEnumerator BlockLerp()
-    {
-        float time = 0;
-        while (time < blockTime)
-        {
-            Constraint.weight = Mathf.Lerp(0, 1, time / blockTime);
-            time += Time.deltaTime;
-
-            yield return null;
-        }
-    }
-
+    /*
+    when the block button is pressed it will activate the blocklerp
+    by increasing the IK (TwoBoneIKConstraint) contraint and overriding the arm animation.
+    after the button is released the shield will go down 
+    */
     public void Block(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -99,6 +79,31 @@ public class blockScript : MonoBehaviour
         }
 
 
+    }
+
+    IEnumerator UnBlockLerp()
+    {
+        float time = 0;
+        float var;
+        while (time < blockTime)
+        {
+            var = Mathf.Lerp(0, 1, time / blockTime);
+            Constraint.weight = 1 - var;
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    IEnumerator BlockLerp()
+    {
+        float time = 0;
+        while (time < blockTime)
+        {
+            Constraint.weight = Mathf.Lerp(0, 1, time / blockTime);
+            time += Time.deltaTime;
+
+            yield return null;
+        }
     }
 
 }

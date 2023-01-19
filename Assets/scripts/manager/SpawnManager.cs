@@ -24,6 +24,7 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
+        //if there isnt a enemyCount or allyCount it will define itself
         if (sceneManager != null)
         {
             enemyCount = sceneManager.enemyCount;
@@ -33,6 +34,7 @@ public class SpawnManager : MonoBehaviour
         SpawnKnight("enemy", enemyCount, enemySpawnA.position, enemySpawnB.position);
         SpawnKnight("ally", allyCount, AllySpawnA.position, AllySpawnB.position);
 
+        //the 2 GameObject[]'s are temporary GameObject[]'s that are convertert into list's
         GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("enemy");
         GameObject[] allAllies = GameObject.FindGameObjectsWithTag("ally");
 
@@ -44,16 +46,16 @@ public class SpawnManager : MonoBehaviour
         {
             allies.Add(item);
         }
-
-        int count = 0;
-        foreach (var item in enemies)
-        {
-            count++;
-        }
     }
 
+    /*
+    this methods starts with a bool battleIsOver that is set true.
+    if there is any enemy alive (ally for the enemy) then it is set to false
+    */
     public bool BattleIsOver(string tagName)
     {
+        // this bool true unless it is truned false by getting all alive enemies/allies
+        //
         bool battleIsOver = true;
 
         if (tagName == "enemy")
@@ -66,14 +68,12 @@ public class SpawnManager : MonoBehaviour
                     {
                         if (!item.GetComponent<aiScript>().isDead)
                         {
-                            //Debug.Log("enemy found =" + item);
                             battleIsOver = false;
                             return battleIsOver;
                         }
                     }
                 }
             }
-            Debug.Log("battle is over");
             WhoWon = 1;
         }
         else if (tagName == "ally")
@@ -84,7 +84,6 @@ public class SpawnManager : MonoBehaviour
                 {
                     if (!item.GetComponent<aiScript>().isDead)
                     {
-                        //Debug.Log("enemy found =" + item);
                         battleIsOver = false;
                         return battleIsOver;
                     }
@@ -93,24 +92,26 @@ public class SpawnManager : MonoBehaviour
                 {
                     if (!item.GetComponent<playerInput>().isDead)
                     {
-                        //Debug.Log("enemy found =" + item);
                         battleIsOver = false;
                         return battleIsOver;
                     }
                 }
             }
-            Debug.Log("battle is over");
             WhoWon = 2;
         }
         else
         {
             Debug.LogError("unusable tag");
         }
-
         return battleIsOver;
     }
 
-    private void SpawnKnight(string tagName, int amount, Vector3 spawnB1, Vector3 spawnB2)
+    /*
+    this method spawns knights based of "amount" 
+    and will be fight  for the team that "tagName" specifies.
+    the spawn area is between spawnP1 and spawnP2
+    */
+    private void SpawnKnight(string tagName, int amount, Vector3 spawnP1, Vector3 spawnP2)
     {
         List<Vector3> spawnList = new List<Vector3>();
 
@@ -124,8 +125,8 @@ public class SpawnManager : MonoBehaviour
         {
             float dis;
             bool isOccupied = false;
-            float posZ = Random.Range(spawnB1.z, spawnB2.z);
-            float posX = Random.Range(spawnB1.x, spawnB2.x);
+            float posZ = Random.Range(spawnP1.z, spawnP2.z);
+            float posX = Random.Range(spawnP1.x, spawnP2.x);
             Vector3 spawn = new Vector3(posX, 0, posZ);
 
             foreach (var item in spawnList)
@@ -146,8 +147,10 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+    //this method will go through the list of the enemy and get the closest one based on distance
     public GameObject GetClosestEnemy(Transform instigator, string tagName)
     {
+        //closest is a high number so it will always be the biggest number
         float closest = 100;
         float tempVal;
         GameObject target = null;
@@ -187,7 +190,6 @@ public class SpawnManager : MonoBehaviour
                 {
                     if (!item.GetComponent<playerInput>().isDead)
                     {
-                        //Debug.Log("enemy found =" + item);
                         closest = tempVal;
                         target = item;
                     }

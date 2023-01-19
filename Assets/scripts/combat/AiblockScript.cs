@@ -25,34 +25,13 @@ public class AiblockScript : MonoBehaviour
         Constraint.weight = 0;
     }
 
-    IEnumerator UnBlockLerp()
-    {
-        float time = 0;
-        float var;
-        while (time < blockTime)
-        {
-            var = Mathf.Lerp(0, 1, time / blockTime);
-            Constraint.weight = 1 - var;
-            time += Time.deltaTime;
-            yield return null;
-        }
-    }
-
-    IEnumerator BlockLerp()
-    {
-        float time = 0;
-        while (time < blockTime)
-        {
-            Constraint.weight = Mathf.Lerp(0, 1, time / blockTime);
-            time += Time.deltaTime;
-
-            yield return null;
-        }
-    }
-
+    /*
+    when the block coroutine is started it will start a lerp to raise the shield
+    the shield wil be up based on the time set and in the direction of "dir"
+    and when the time has past the shield wil lower
+    */
     public IEnumerator block(int dir)
     {
-
         float time = 0;
         while (time < blockTime)
         {
@@ -110,5 +89,4 @@ public class AiblockScript : MonoBehaviour
             }
         }
     }
-
 }

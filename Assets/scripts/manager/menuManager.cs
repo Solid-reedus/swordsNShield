@@ -34,6 +34,7 @@ public class menuManager : MonoBehaviour
 
     [SerializeField] Button Exit;
 
+    //in the start methods are a list of buttons that get a onclick Listener attached to it
     void Start()
     {
         howtRetrunButton.onClick.AddListener(RetrunButtonClicked);
@@ -51,12 +52,18 @@ public class menuManager : MonoBehaviour
         BattleButton.onClick.AddListener(Battle);
     }
 
+    //when the menuManager is "awake" the inputfields gets new values defined
     private void Awake()
     {
         allyCountText.text = allyCount.ToString();
         enemyCountText.text = enemyCount.ToString();
     }
 
+    /*
+     in the update there is code that checks if allyCountText.text or enemyCountText.text goes
+    under 1 or over 25.
+    if it goes under 1 then the value is set to 1 and if it goes over 25 it goes to 25 
+    */
     void Update()
     {
         if (int.Parse(allyCountText.text) < 1)
@@ -96,6 +103,7 @@ public class menuManager : MonoBehaviour
         UpdateMenu(3);
     }
 
+    //this exits the game
     void ExitGame()
     {
         Application.Quit();
@@ -137,13 +145,17 @@ public class menuManager : MonoBehaviour
         enemyCountText.text = enemyCount.ToString();
     }
 
+    //this method sets the sceneManager allyCount and enemyCount to be used in the seconds scene
+    //and afterwards loads the next scene
     void Battle()
     {
         sceneManager.allyCount = allyCount;
         sceneManager.enemyCount = enemyCount;
         SceneManager.LoadScene(1);
     }
- 
+
+    //this methods updates the menu's so only one is seen
+    //the menu seen is based on menuIndex
     void UpdateMenu(int menuIndex)
     {
         mainCanv.SetActive(false);

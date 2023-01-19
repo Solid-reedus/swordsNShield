@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 {
     private Animator playerAnimator;
@@ -45,7 +44,6 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
     private string enemyTag = "enemy";
 
     int IdirectionalInput.lookVal { get { return lookValInt; }}
-    //bool IdirectionalInput.movingshield { get { return isBlocking; } set { this.isBlocking = value; } }
     bool IBlock.isBlocking { get { return isBlocking; } set { this.isBlocking = value; } }
     bool Imelee.isSwinging { get { return isSwining; } set { this.isSwining = value; } }
     string Imelee.enemyTag { get { return enemyTag; } set { this.enemyTag = value; } }
@@ -54,33 +52,30 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 
     void Start()
     {
-        //goToMenuButton = goToMenuButtonGameObject.GetComponent<Button>();
-        //goToMenuButton.onClick.AddListener(goToMenu);
         SpawnManager = FindObjectOfType<SpawnManager>();
         playerAnimator = GetComponentInChildren<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    //this updates the movement force and checks if the battle is over
     public void Update()
     {
-        //this.transform.position.Move(Time.deltaTime * movementValue * WalkForce);
-        //movementValue.TransformPoint
-        //this.Move(Time.deltaTime * movementValue * WalkForce, ForceMode.VelocityChange);
         SpawnManager.BattleIsOver(enemyTag);
-
         playerRigidbody.AddRelativeForce(Time.deltaTime * movementValue * WalkForce, ForceMode.VelocityChange);
         updateBattle(SpawnManager.WhoWon);
     }
 
+    //this coroutine will go back to the menu
     IEnumerator goToMenu()
     {
-        yield return new WaitForSeconds(3);
-        Debug.Log("aaaaaaaaa");
+        yield return new WaitForSeconds(5);
         SceneManager.LoadScene(0);
         yield break;
     }
 
+    //this method sets a new value for movementValue based 
+    //on the context from the new input system
     public void Move(InputAction.CallbackContext value)
     {
         Vector2 movement = value.ReadValue<Vector2>();
@@ -90,6 +85,7 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         playerAnimator.SetFloat("inputY", movement.y);
     }
 
+    //this method displays the correct arrow based on the lookValInt
     void UpdateArrow()
     {
         arrowRight.SetActive(false);
@@ -123,11 +119,16 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 
     }
 
+    /*
+    this method will
+    1 - rotate the camera (vertically) and rotate the players (horizontally) based on the 
+        context of the new input system
+    2 - it will update the value and arrow of the dominant direction of where your move is moving
+        in 1 of 4 directions (up, left, down and right)
+    */
     public void Look(InputAction.CallbackContext value)
     {
-        
         Vector2 lookVal = value.ReadValue<Vector2>();
-
         Vector2 lookVal2 = lookVal * Time.deltaTime * lookSensitivity * 10;
 
         float result = Mathf.Max(lookVal2.x, lookVal2.y, -lookVal2.x, -lookVal2.y);
@@ -135,26 +136,22 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         if (result == lookVal2.x && result > lookThreshold)
         {
             lookValInt = 1;
-            ////Debug.Log("player is looking right");
         }
         else if (result == lookVal2.y && result > lookThreshold)
         {
             lookValInt = 2;
-            //Debug.Log("player is looking up");
         }
         else if (result == -lookVal2.x && result > lookThreshold)
         {
             lookValInt = 3;
-            //Debug.Log("player is looking left");
         }
         else if (result == -lookVal2.y && result > lookThreshold)
         {
             lookValInt = 4;
-            //Debug.Log("player is looking down");
         }
         else
         {
-            //Debug.Log("player is looking n/a");
+
         }
 
         lookDir.y -= lookVal.y * Time.deltaTime * lookSensitivity;
@@ -169,6 +166,11 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
             Camera.transform.eulerAngles.z);
     }
 
+    /*
+    this is a implementation of the IdamageAble interface and
+    allows this method to be called as a interface instead the whole script
+    this script damages the player
+    */
     public void damage(float dmg)
     {
         playerHealth -= dmg;
@@ -179,6 +181,8 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         }
     }
 
+    //if the player loses to many hit points he will die and will play a death animation
+    //and controls wil be disabled
     void Die()
     {
         playerAnimator.applyRootMotion = true;
@@ -190,6 +194,11 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         Cursor.lockState = CursorLockMode.None;
     }
 
+    /*
+    if the state is 1 or 2 (allies won and enemy won) 
+    then it will disable controls and active the cursor
+    after that it will show the correct win or lose text
+    */
     void updateBattle(int state)
     {
         if (state == 1 || state == 2)
@@ -221,8 +230,8 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
             default:
             {
                 Debug.LogError("winstate is incorect");
-            }
                 break;
+            }
         }
     }
 

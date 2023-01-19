@@ -124,6 +124,7 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
         Animator.Play("no more walking");
         Animator.Play("die");
         isDead = true;
+        SpawnManager.BattleIsOver(enemyTag);
     }
 
     private void KnightNav()
@@ -289,13 +290,9 @@ public class aiScript : MonoBehaviour, IdamageAble, Imelee, IBlock
             return;
         }
 
-        Debug.Log($"target swinging is {target.gameObject.name} and swinging is {target.gameObject.GetComponent<Imelee>().isSwinging}");
-
         if (target.gameObject.GetComponent<Imelee>().isSwinging && !isTryingToBlock)
         {
-            Debug.Log("trying to block");
             float reactionTime = Random.Range(0.2f, 0.7f);
-
             float dur = Random.Range(1.2f, 2.6f);
             isTryingToBlock = true;
 

@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 {
     private Animator playerAnimator;
     private Rigidbody playerRigidbody;
+
     [SerializeField] private float playerHealth = 100;
+    SpawnManager SpawnManager;
 
     [SerializeField] private Transform Camera;
     [SerializeField] private Collider groundCheck;
@@ -23,6 +27,9 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
     [SerializeField] private GameObject arrowUp;
     [SerializeField] private GameObject arrowBottom;
     [SerializeField] private GameObject arrowLeft;
+
+    [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject loseScreen;
 
     [SerializeField] private Collider swordTrigger;
     [SerializeField] private Collider shieldTrigger;
@@ -47,6 +54,9 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 
     void Start()
     {
+        //goToMenuButton = goToMenuButtonGameObject.GetComponent<Button>();
+        //goToMenuButton.onClick.AddListener(goToMenu);
+        SpawnManager = FindObjectOfType<SpawnManager>();
         playerAnimator = GetComponentInChildren<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -54,9 +64,22 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
 
     public void Update()
     {
-        playerRigidbody.AddRelativeForce(Time.deltaTime * movementValue * WalkForce, ForceMode.Impulse);
+        //this.transform.position.Move(Time.deltaTime * movementValue * WalkForce);
+        //movementValue.TransformPoint
+        //this.Move(Time.deltaTime * movementValue * WalkForce, ForceMode.VelocityChange);
+        SpawnManager.BattleIsOver(enemyTag);
+
+        playerRigidbody.AddRelativeForce(Time.deltaTime * movementValue * WalkForce, ForceMode.VelocityChange);
+        updateBattle(SpawnManager.WhoWon);
     }
 
+    IEnumerator goToMenu()
+    {
+        yield return new WaitForSeconds(3);
+        Debug.Log("aaaaaaaaa");
+        SceneManager.LoadScene(0);
+        yield break;
+    }
 
     public void Move(InputAction.CallbackContext value)
     {
@@ -164,8 +187,43 @@ public class playerInput : MonoBehaviour, Imelee, IBlock, IdamageAble
         GetComponent<PlayerInput>().enabled = false;
         lookSensitivity = 0;
         isDead = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
-
+    void updateBattle(int state)
+    {
+        if (state == 1 || state == 2)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            lookSensitivity = 0;
+            GetComponent<PlayerInput>().enabled = false;
+            StartCoroutine(goToMenu());
+        }
+        switch (state)
+        {
+            case 0:
+            {
+                // nothing
+                break;
+            }
+            case 1:
+            {
+                // we won
+                winScreen.SetActive(true);
+                break;
+            }
+            case 2:
+            {
+                // enemy won
+                loseScreen.SetActive(true);
+                break;
+            }
+            default:
+            {
+                Debug.LogError("winstate is incorect");
+            }
+                break;
+        }
+    }
 
 }

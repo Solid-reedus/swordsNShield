@@ -663,10 +663,8 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: "\nBinding warning: Some generic clip(s) animate transforms that are
         already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Elbow_R'\n\tTransform 'Shoulder_L'\n\tTransform 'Elbow_L'\n\tTransform 'Scapula_L'\n\tTransform
-        'Shoulder_L'\n\tFrom animation clip 'sword swing T'"
+        by Humanoid clips.\n\tTransform 'Elbow_R'\n\tFrom animation clip 'sword swing
+        T'"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f8a142103f1ffc44970d4f6ead11e7a, type: 3}
@@ -679,7 +677,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2964155725327434022, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: health
-      value: 9999
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3095491368902402904, guid: 7853f8c71e15143418f47dfa03c48383, type: 3}
       propertyPath: Collider

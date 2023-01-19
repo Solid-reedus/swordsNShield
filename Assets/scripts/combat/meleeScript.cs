@@ -57,7 +57,6 @@ public class meleeScript : MonoBehaviour
     IEnumerator SwingSwordCoroutine(float dur, float start, float end)
     {
         Imelee.isSwinging = true;
-        //Debug.Log("SwingSwordCoroutine is run");
         dur *= 100; // ~150
         float time = 0;
 
@@ -75,7 +74,7 @@ public class meleeScript : MonoBehaviour
                 if (colScript.Collider.GetComponent<IdamageAble>() != null 
                     && colScript.Collider.tag == Imelee.enemyTag)
                 {
-                    //Debug.Log($"enemy = {colScript.Collider.name}");
+                    Debug.Log($"enemy = {colScript.Collider.name}");
                     IdamageAble damageAble = colScript.Collider.GetComponent<IdamageAble>();
                     float dmg = Random.Range(minDamage, maxDamage);
                     damageAble.damage(dmg);
@@ -86,7 +85,7 @@ public class meleeScript : MonoBehaviour
                 }
                 else if (colScript.Collider.tag == "shield")
                 {
-                    //Debug.Log($"shield = {colScript.Collider.name}");
+                    Debug.Log($"shield = {colScript.Collider.name}");
                     isHit = true;
                 }
             }

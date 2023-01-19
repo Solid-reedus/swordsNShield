@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class menuManager : MonoBehaviour
 {
+    int allyCount = 1;
+    int enemyCount = 1;
+
     [SerializeField] GameObject mainCanv;
     [SerializeField] GameObject SkirCanv;
     [SerializeField] GameObject howtCanv;
@@ -17,17 +20,20 @@ public class menuManager : MonoBehaviour
     [SerializeField] Button howtOpenButton;
     [SerializeField] Button SkirOpenButton;
 
+    [SerializeField] Button decreaseAllyButton;
+    [SerializeField] Button increaseAllyButton;
+    [SerializeField] Button decreaseEnemyButton;
+    [SerializeField] Button increaseEnemyButton;
+
+    [SerializeField] Button BattleButton;
+
+    [SerializeField] TMP_InputField allyCountText;
+    [SerializeField] TMP_InputField enemyCountText;
+
+    [SerializeField] sceneManager sceneManager;
+
     [SerializeField] Button Exit;
 
-    //private int menuIndex = 1;
-
-
-
-
-
-    //pistolButton.onClick.AddListener(pistolButtonClicked);
-
-    // Start is called before the first frame update
     void Start()
     {
         howtRetrunButton.onClick.AddListener(RetrunButtonClicked);
@@ -35,10 +41,44 @@ public class menuManager : MonoBehaviour
 
         howtOpenButton.onClick.AddListener(OpenHowt);
         SkirOpenButton.onClick.AddListener(OpenSkir);
-        Exit.onClick.AddListener(Quit);
+        Exit.onClick.AddListener(ExitGame);
 
+        decreaseAllyButton.onClick.AddListener(decreaseAlly);
+        increaseAllyButton.onClick.AddListener(increaseAlly);
+        decreaseEnemyButton.onClick.AddListener(decreaseEnemy);
+        increaseEnemyButton.onClick.AddListener(increaseEnemy);
 
-        //howtRetrunButton = howtCanv.GetComponentInChildren<Button>();
+        BattleButton.onClick.AddListener(Battle);
+    }
+
+    private void Awake()
+    {
+        allyCountText.text = allyCount.ToString();
+        enemyCountText.text = enemyCount.ToString();
+    }
+
+    void Update()
+    {
+        if (int.Parse(allyCountText.text) < 1)
+        {
+            allyCount = 1;
+            allyCountText.text = allyCount.ToString();
+        }
+        if (int.Parse(allyCountText.text) > 25)
+        {
+            allyCount = 25;
+            allyCountText.text = allyCount.ToString();
+        }
+        if (int.Parse(enemyCountText.text) < 1)
+        {
+            enemyCount = 1;
+            enemyCountText.text = enemyCount.ToString();
+        }
+        if (int.Parse(enemyCountText.text) > 25)
+        {
+            enemyCount = 25;
+            enemyCountText.text = enemyCount.ToString();
+        }
     }
 
     void RetrunButtonClicked()
@@ -56,17 +96,54 @@ public class menuManager : MonoBehaviour
         UpdateMenu(3);
     }
 
-    void Quit()
+    void ExitGame()
     {
         Application.Quit();
     }
 
-    // Update is called once per frame
-    void Update()
+    void decreaseAlly()
     {
-        
+        if (allyCount > 1)
+        {
+            allyCount--;
+        }
+        allyCountText.text = allyCount.ToString();
     }
 
+    void increaseAlly()
+    {
+        if (allyCount < 25)
+        {
+            allyCount++;
+        }
+        allyCountText.text = allyCount.ToString();
+    }
+
+    void decreaseEnemy()
+    {
+        if (enemyCount > 1)
+        {
+            enemyCount--;
+        }
+        enemyCountText.text = enemyCount.ToString();
+    }
+
+    void increaseEnemy()
+    {
+        if (enemyCount < 25)
+        {
+            enemyCount++;
+        }
+        enemyCountText.text = enemyCount.ToString();
+    }
+
+    void Battle()
+    {
+        sceneManager.allyCount = allyCount;
+        sceneManager.enemyCount = enemyCount;
+        SceneManager.LoadScene(1);
+    }
+ 
     void UpdateMenu(int menuIndex)
     {
         mainCanv.SetActive(false);

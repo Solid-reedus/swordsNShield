@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private int enemyCount = 10;
-    [SerializeField] private int allyCount  = 3;
+    [SerializeField] private int enemyCount = 5;
+    [SerializeField] private int allyCount  = 5;
 
     [SerializeField] private Transform enemySpawnA;
     [SerializeField] private Transform enemySpawnB;
@@ -14,12 +14,22 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private Transform AllySpawnB;
 
     [SerializeField] private GameObject Knight;
+    [SerializeField] private sceneManager sceneManager;
+
 
     public List<GameObject> enemies = new List<GameObject>();
     public List<GameObject> allies = new List<GameObject>();
 
+    public int WhoWon = 0;
+
     void Start()
     {
+        if (sceneManager != null)
+        {
+            enemyCount = sceneManager.enemyCount;
+            allyCount = sceneManager.allyCount;
+        }
+
         SpawnKnight("enemy", enemyCount, enemySpawnA.position, enemySpawnB.position);
         SpawnKnight("ally", allyCount, AllySpawnA.position, AllySpawnB.position);
 
@@ -39,7 +49,6 @@ public class SpawnManager : MonoBehaviour
         foreach (var item in enemies)
         {
             count++;
-            //Debug.Log($"num {count} enemy {enemies} pos {item.transform.position}");
         }
     }
 
@@ -65,6 +74,7 @@ public class SpawnManager : MonoBehaviour
                 }
             }
             Debug.Log("battle is over");
+            WhoWon = 1;
         }
         else if (tagName == "ally")
         {
@@ -79,14 +89,18 @@ public class SpawnManager : MonoBehaviour
                         return battleIsOver;
                     }
                 }
-                else if (!item.GetComponent<playerInput>().isDead)
+                else if (item.GetComponent<playerInput>() != null)
                 {
-                    //Debug.Log("enemy found =" + item);
-                    battleIsOver = false;
-                    return battleIsOver;
+                    if (!item.GetComponent<playerInput>().isDead)
+                    {
+                        //Debug.Log("enemy found =" + item);
+                        battleIsOver = false;
+                        return battleIsOver;
+                    }
                 }
             }
             Debug.Log("battle is over");
+            WhoWon = 2;
         }
         else
         {
@@ -134,8 +148,6 @@ public class SpawnManager : MonoBehaviour
 
     public GameObject GetClosestEnemy(Transform instigator, string tagName)
     {
-        //Debug.Log($"GetClosestEnemy is prefromed Transform = {instigator} tagName = {tagName}");
-
         float closest = 100;
         float tempVal;
         GameObject target = null;
@@ -186,8 +198,6 @@ public class SpawnManager : MonoBehaviour
         {
             Debug.LogError("unusable tag");
         }
-
-        //Debug.Log($"returned value is {target.name}");
         return target;
     }
 
